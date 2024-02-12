@@ -8,6 +8,7 @@ import (
 type NVMFunction struct {
 	name     string
 	commands []NVMCommand
+	labels   []int
 }
 
 func splitFunctions(inputCommands []NVMCommand) []NVMFunction {
@@ -57,7 +58,17 @@ func generateFunction(inputCommands []NVMCommand) NVMFunction {
 	for i := 0; i < len(inputCommands); i++ {
 		result.commands = append(result.commands, inputCommands[i])
 	}
+	generateLabels(&result)
 	return result
+}
+
+func generateLabels(function *NVMFunction) {
+	for i := 0; i < len(function.commands); i++ {
+		if function.commands[i].commandName == "LABEL" {
+			function.labels = append(function.labels, i)
+			function.commands[i] = generateNVMCommand("NOOP")
+		}
+	}
 }
 
 func (this *NVMFunction) print() {

@@ -9,16 +9,12 @@ type NOOP struct{ executor *NVMExecutor }
 
 func (this *NOOP) setMachine(executor *NVMExecutor) { this.executor = executor }
 func (this *NOOP) runNoArg(stackframe *NVMStackframe) {
-	fmt.Println("ERROR: Delegate NOOP, Method runNoArg called!")
 }
 func (this *NOOP) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
-	fmt.Println("ERROR: Delegate NOOP, Method runOneArg called!")
 }
 func (this *NOOP) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
-	fmt.Println("ERROR: Delegate NOOP, Method runTwoArgs called!")
 }
 func (this *NOOP) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate NOOP, Method runThreeArgs called!")
 }
 
 type REFA struct{ executor *NVMExecutor }
@@ -36,7 +32,7 @@ func (this *REFA) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMAr
 	fmt.Println("ERROR: Delegate REFA, Method runTwoArgs called!")
 }
 func (this *REFA) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	stackframe.variables = append(stackframe.variables, generateNVMVariable(b.intValue, c.intValue))
+	stackframe.variables = append(stackframe.variables, generateNVMVariable(b.integer, c.integer))
 }
 
 type MOV struct{ executor *NVMExecutor }
@@ -65,22 +61,22 @@ func (this *SET) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	fmt.Println("ERROR: Delegate SET, Method runOneArg called!")
 }
 func (this *SET) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
-	switch stackframe.variables[a.intValue].valueType {
+	switch stackframe.variables[a.integer].valueType {
 	case 0:
-		if b.intValue == 1 {
-			stackframe.variables[a.intValue].boolValue[0] = true
+		if b.integer == 1 {
+			stackframe.variables[a.integer].boolValue[0] = true
 		} else {
-			stackframe.variables[a.intValue].boolValue[0] = false
+			stackframe.variables[a.integer].boolValue[0] = false
 		}
 		break
 	case 1:
-		stackframe.variables[a.intValue].byteValue[0] = uint8(b.intValue)
+		stackframe.variables[a.integer].byteValue[0] = uint8(b.integer)
 		break
 	case 2:
-		stackframe.variables[a.intValue].integerValue[0] = int32(b.intValue)
+		stackframe.variables[a.integer].integerValue[0] = int32(b.integer)
 		break
 	case 3:
-		stackframe.variables[a.intValue].realValue[0] = float64(b.intValue)
+		stackframe.variables[a.integer].realValue[0] = float64(b.integer)
 		break
 	}
 }
@@ -98,7 +94,20 @@ func (this *SETV) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	fmt.Println("ERROR: Delegate SETV, Method runOneArg called!")
 }
 func (this *SETV) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
-	fmt.Println("ERROR: Delegate SETV, Method runTwoArgs called!")
+	switch stackframe.variables[a.integer].valueType {
+	case 0:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[0]
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0]
+		break
+	case 3:
+		stackframe.variables[a.integer].realValue[0] = stackframe.variables[b.integer].realValue[0]
+		break
+	}
 }
 func (this *SETV) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
 	fmt.Println("ERROR: Delegate SETV, Method runThreeArgs called!")
@@ -165,7 +174,20 @@ func (this *ADD) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArg
 	fmt.Println("ERROR: Delegate ADD, Method runTwoArgs called!")
 }
 func (this *ADD) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate ADD, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called ADD on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] + stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0] + stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		stackframe.variables[a.integer].realValue[0] = stackframe.variables[b.integer].realValue[0] + stackframe.variables[c.integer].realValue[0]
+		break
+	}
 }
 
 type SUB struct{ executor *NVMExecutor }
@@ -181,7 +203,20 @@ func (this *SUB) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArg
 	fmt.Println("ERROR: Delegate SUB, Method runTwoArgs called!")
 }
 func (this *SUB) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate SUB, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called SUB on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] - stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0] - stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		stackframe.variables[a.integer].realValue[0] = stackframe.variables[b.integer].realValue[0] - stackframe.variables[c.integer].realValue[0]
+		break
+	}
 }
 
 type MUL struct{ executor *NVMExecutor }
@@ -197,7 +232,20 @@ func (this *MUL) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArg
 	fmt.Println("ERROR: Delegate MUL, Method runTwoArgs called!")
 }
 func (this *MUL) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate MUL, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called MUL on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] * stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0] * stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		stackframe.variables[a.integer].realValue[0] = stackframe.variables[b.integer].realValue[0] * stackframe.variables[c.integer].realValue[0]
+		break
+	}
 }
 
 type DIV struct{ executor *NVMExecutor }
@@ -213,7 +261,20 @@ func (this *DIV) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArg
 	fmt.Println("ERROR: Delegate DIV, Method runTwoArgs called!")
 }
 func (this *DIV) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate DIV, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called DIV on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] / stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0] / stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		stackframe.variables[a.integer].realValue[0] = stackframe.variables[b.integer].realValue[0] / stackframe.variables[c.integer].realValue[0]
+		break
+	}
 }
 
 type BINOR struct{ executor *NVMExecutor }
@@ -229,7 +290,20 @@ func (this *BINOR) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMA
 	fmt.Println("ERROR: Delegate BINOR, Method runTwoArgs called!")
 }
 func (this *BINOR) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate BINOR, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called ADD on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] | stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0] | stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		fmt.Println("ERROR: Called BINOR on real values")
+		break
+	}
 }
 
 type BINAND struct{ executor *NVMExecutor }
@@ -245,7 +319,20 @@ func (this *BINAND) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVM
 	fmt.Println("ERROR: Delegate BINAND, Method runTwoArgs called!")
 }
 func (this *BINAND) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate BINAND, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called ADD on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] & stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0] & stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		fmt.Println("ERROR: Called BINAND on real values")
+		break
+	}
 }
 
 type BINXOR struct{ executor *NVMExecutor }
@@ -261,7 +348,20 @@ func (this *BINXOR) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVM
 	fmt.Println("ERROR: Delegate BINXOR, Method runTwoArgs called!")
 }
 func (this *BINXOR) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate BINXOR, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called BINXOR on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] ^ stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0] ^ stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		fmt.Println("ERROR: Called BINXOR on real values")
+		break
+	}
 }
 
 type BINNOT struct{ executor *NVMExecutor }
@@ -293,7 +393,20 @@ func (this *LESSTHAN) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *N
 	fmt.Println("ERROR: Delegate LESSTHAN, Method runTwoArgs called!")
 }
 func (this *LESSTHAN) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate LESSTHAN, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called LESSTHAN on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].byteValue[0] < stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].integerValue[0] < stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].realValue[0] < stackframe.variables[c.integer].realValue[0]
+		break
+	}
 }
 
 type GREATERTHAN struct{ executor *NVMExecutor }
@@ -309,7 +422,20 @@ func (this *GREATERTHAN) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b
 	fmt.Println("ERROR: Delegate GREATERTHAN, Method runTwoArgs called!")
 }
 func (this *GREATERTHAN) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate GREATERTHAN, Method runThreeArgs called!")
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called GREATERTHAN on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].byteValue[0] > stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].integerValue[0] > stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].realValue[0] > stackframe.variables[c.integer].realValue[0]
+		break
+	}
 }
 
 type LOGOR struct{ executor *NVMExecutor }
@@ -325,7 +451,7 @@ func (this *LOGOR) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMA
 	fmt.Println("ERROR: Delegate LOGOR, Method runTwoArgs called!")
 }
 func (this *LOGOR) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate LOGOR, Method runThreeArgs called!")
+	stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[0] || stackframe.variables[c.integer].boolValue[0]
 }
 
 type LOGAND struct{ executor *NVMExecutor }
@@ -341,7 +467,7 @@ func (this *LOGAND) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVM
 	fmt.Println("ERROR: Delegate LOGAND, Method runTwoArgs called!")
 }
 func (this *LOGAND) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate LOGAND, Method runThreeArgs called!")
+	stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[0] && stackframe.variables[c.integer].boolValue[0]
 }
 
 type LOGNOT struct{ executor *NVMExecutor }
@@ -380,10 +506,23 @@ type PRINT struct{ executor *NVMExecutor }
 
 func (this *PRINT) setMachine(executor *NVMExecutor) { this.executor = executor }
 func (this *PRINT) runNoArg(stackframe *NVMStackframe) {
-	fmt.Println("ERROR: Delegate PRINT, Method runNoArg called!")
+	fmt.Println()
 }
 func (this *PRINT) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
-	fmt.Println("ERROR: Delegate PRINT, Method runOneArg called!")
+	switch stackframe.variables[a.integer].valueType {
+	case 0:
+		fmt.Println(stackframe.variables[a.integer].boolValue[0])
+		break
+	case 1:
+		fmt.Println(stackframe.variables[a.integer].byteValue[0])
+		break
+	case 2:
+		fmt.Println(stackframe.variables[a.integer].integerValue[0])
+		break
+	case 3:
+		fmt.Printf("%f\n", stackframe.variables[a.integer].realValue[0])
+		break
+	}
 }
 func (this *PRINT) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
 	fmt.Println("ERROR: Delegate PRINT, Method runTwoArgs called!")
@@ -399,7 +538,20 @@ func (this *RETURN) runNoArg(stackframe *NVMStackframe) {
 	fmt.Println("ERROR: Delegate RETURN, Method runNoArg called!")
 }
 func (this *RETURN) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
-	fmt.Println("ERROR: Delegate RETURN, Method runOneArg called!")
+	switch stackframe.variables[a.integer].valueType {
+	case 0:
+		stackframe.executor.returnRegister.boolValue = stackframe.variables[a.integer].boolValue
+		break
+	case 1:
+		stackframe.executor.returnRegister.byteValue = stackframe.variables[a.integer].byteValue
+		break
+	case 2:
+		stackframe.executor.returnRegister.integerValue = stackframe.variables[a.integer].integerValue
+		break
+	case 3:
+		stackframe.executor.returnRegister.realValue = stackframe.variables[a.integer].realValue
+		break
+	}
 }
 func (this *RETURN) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
 	fmt.Println("ERROR: Delegate RETURN, Method runTwoArgs called!")
@@ -420,10 +572,9 @@ func (this *CALL) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	fmt.Println("ERROR: Delegate CALL, Method runOneArg called!")
 }
 func (this *CALL) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
-	var functionAddress = &stackframe.executor.functions[a.intValue]
+	var functionAddress = &stackframe.executor.functions[a.integer]
 	var newStackframe = generateStackframe(functionAddress, stackframe.executor)
 	stackframe.executor.stack = append(stackframe.executor.stack, newStackframe)
-	fmt.Println("ERROR: Delegate CALL, Method runTwoArg called!")
 }
 func (this *CALL) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
 	fmt.Println("ERROR: Delegate CALL, Method runThreeArgs called!")
@@ -436,7 +587,7 @@ func (this *PARG) runNoArg(stackframe *NVMStackframe) {
 	fmt.Println("ERROR: Delegate PARG, Method runNoArg called!")
 }
 func (this *PARG) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
-	stackframe.executor.argRegister = append(stackframe.executor.argRegister, stackframe.variables[a.intValue])
+	stackframe.executor.argRegister = append(stackframe.executor.argRegister, stackframe.variables[a.integer])
 }
 func (this *PARG) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
 	fmt.Println("ERROR: Delegate PARG, Method runTwoArgs called!")
@@ -458,7 +609,9 @@ func (this *BEQ) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArg
 	fmt.Println("ERROR: Delegate BEQ, Method runTwoArgs called!")
 }
 func (this *BEQ) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	fmt.Println("ERROR: Delegate BEQ, Method runThreeArgs called!")
+	if stackframe.variables[b.integer].boolValue[0] && stackframe.variables[c.integer].boolValue[0] {
+		stackframe.programCounter = stackframe.function.labels[a.integer]
+	}
 }
 
 type LABEL struct{ executor *NVMExecutor }
@@ -519,7 +672,20 @@ func (this *GARG) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	fmt.Println("ERROR: Delegate GARG, Method runOneArg called!")
 }
 func (this *GARG) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
-	fmt.Println("ERROR: Delegate GARG, Method runTwoArgs called!")
+	switch stackframe.variables[a.integer].valueType {
+	case 0:
+		stackframe.variables[a.integer].boolValue = stackframe.executor.argRegister[b.integer].boolValue
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue = stackframe.executor.argRegister[b.integer].byteValue
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue = stackframe.executor.argRegister[b.integer].integerValue
+		break
+	case 3:
+		stackframe.variables[a.integer].realValue = stackframe.executor.argRegister[b.integer].realValue
+		break
+	}
 }
 func (this *GARG) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
 	fmt.Println("ERROR: Delegate GARG, Method runThreeArgs called!")
@@ -529,7 +695,6 @@ type MAIN struct{ executor *NVMExecutor }
 
 func (this *MAIN) setMachine(executor *NVMExecutor) { this.executor = executor }
 func (this *MAIN) runNoArg(stackframe *NVMStackframe) {
-	fmt.Println("ERROR: Delegate MAIN, Method runNoArg called!")
 }
 func (this *MAIN) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	fmt.Println("ERROR: Delegate MAIN, Method runOneArg called!")
@@ -564,7 +729,20 @@ func (this *RETG) runNoArg(stackframe *NVMStackframe) {
 	fmt.Println("ERROR: Delegate RETG, Method runNoArg called!")
 }
 func (this *RETG) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
-	fmt.Println("ERROR: Delegate RETG, Method runOneArg called!")
+	switch stackframe.variables[a.integer].valueType {
+	case 0:
+		stackframe.variables[a.integer].boolValue = stackframe.executor.returnRegister.boolValue
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue = stackframe.executor.returnRegister.byteValue
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue = stackframe.executor.returnRegister.integerValue
+		break
+	case 3:
+		stackframe.variables[a.integer].realValue = stackframe.executor.returnRegister.realValue
+		break
+	}
 }
 func (this *RETG) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
 	fmt.Println("ERROR: Delegate RETG, Method runTwoArgs called!")

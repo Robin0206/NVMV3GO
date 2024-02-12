@@ -30,9 +30,8 @@ func generateNVMCommand(inputLine string) NVMCommand {
 		result.commandindex = getCommandIndex(commandName)
 		return result
 	} else {
-		if commandName != "CALL" {
+		if commandName == "MAIN" {
 			result.commandName = commandName
-			result.functionName = splitted[1]
 			result.commandindex = getCommandIndex(commandName)
 			return result
 		} else {
@@ -41,16 +40,15 @@ func generateNVMCommand(inputLine string) NVMCommand {
 			result.commandindex = getCommandIndex(commandName)
 			return result
 		}
-
 	}
 }
 func (this *NVMCommand) print() {
 	fmt.Print("| " + this.commandName + " | ")
 	for i := 0; i < len(this.arguments); i++ {
 		if this.arguments[i].valueType == 0 {
-			fmt.Printf("%d | ", this.arguments[i].intValue)
+			fmt.Printf("%d | ", this.arguments[i].integer)
 		} else {
-			fmt.Printf("%d | ", this.arguments[i].intValue)
+			fmt.Printf("%d | ", this.arguments[i].integer)
 		}
 	}
 	fmt.Println()

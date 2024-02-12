@@ -155,10 +155,10 @@ func (execPtr *NVMExecutor) fillDelegateTable() {
 }
 
 func (execPtr *NVMExecutor) run() {
-	execPtr.stack[len(execPtr.stack)-1].print()
 	var currentCommand NVMCommand
 	for !execPtr.stop && len(execPtr.stack) > 0 {
 		currentCommand = execPtr.stack[len(execPtr.stack)-1].function.commands[execPtr.stack[len(execPtr.stack)-1].programCounter]
+		//fmt.Println(currentCommand.commandName)
 		switch len(currentCommand.arguments) {
 		case 0:
 			execPtr.delegateTable[currentCommand.commandindex].runNoArg(&execPtr.stack[len(execPtr.stack)-1])
