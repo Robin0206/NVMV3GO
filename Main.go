@@ -2,6 +2,7 @@ package main
 
 import (
 	"NVMV3/Compiler"
+	"NVMV3/Executor"
 	"bufio"
 	"fmt"
 	"os"
@@ -9,7 +10,7 @@ import (
 
 func main() {
 	var lines []string
-	file, err := os.Open("./resources/PrimeSieve.nvm")
+	file, err := os.Open("./resources/Test.num")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -18,9 +19,9 @@ func main() {
 	for fileScanner.Scan() {
 		lines = append(lines, fileScanner.Text())
 	}
-	var preprocessor = Compiler.GeneratePreprocessor()
-	var preprocessedLines = preprocessor.ProcessLines(lines)
-	for i := 0; i < len(preprocessedLines); i++ {
-		fmt.Println(preprocessedLines[i])
-	}
+	var compiler = Compiler.GenerateSyntacticalSugarCompiler()
+	var commands = compiler.Compile(lines)
+	var executor = Executor.GenerateExecutor(Executor.SplitFunctions(commands))
+	executor.Run()
+
 }

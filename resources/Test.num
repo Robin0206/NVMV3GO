@@ -1,0 +1,35 @@
+FUNC fib
+REFA a 2 0
+REFA b 2 0
+REFA c 2 0
+REFA n 2 0
+REFA true 0 0
+REFA grtBuffer 0 0
+REFA nBuffer 2 0
+REFA twoBuffer 2 0
+REFA oneBuffer 2 0
+REFA zeroBuffer 2 0
+SET true 1
+SET zeroBuffer 0
+SET oneBuffer 1
+SET twoBuffer 2
+SET a 0
+SET b 1
+SET c 1
+GARG n 0
+LABEL loopLabel
+SETV a b
+SETV b c
+ADD c a b
+SUB n n oneBuffer
+SUB nBuffer n twoBuffer
+GREATERTHAN grtBuffer nBuffer zeroBuffer
+BEQ grtBuffer true loopLabel
+PRINT c
+FEND
+MAIN
+REFA n 2 0
+SET n 30
+PARG n
+CALL fib
+MEND

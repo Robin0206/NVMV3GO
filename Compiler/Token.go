@@ -1,6 +1,10 @@
 package Compiler
 
-import "strings"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
 
 const CURLY_BRACE_LEFT_STRING = "{"
 const CURLY_BRACE_RIGHT_STRING = "}"
@@ -75,4 +79,8 @@ func generateToken(content string, tokenType int) Token {
 	result.tokenType = tokenType
 	result.content = strings.Replace(content, " ", "", -1)
 	return result
+}
+
+func (this *Token) Print() {
+	fmt.Println(this.content + " " + strconv.Itoa(this.tokenType))
 }
