@@ -1,4 +1,4 @@
-package main
+package Executor
 
 type NVMVariable struct {
 	boolValue    []bool

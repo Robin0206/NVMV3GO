@@ -1,4 +1,4 @@
-package main
+package Executor
 
 type NVMStackframe struct {
 	function       *NVMFunction

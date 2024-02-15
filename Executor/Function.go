@@ -1,4 +1,4 @@
-package main
+package Executor
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ type NVMFunction struct {
 	labels   []int
 }
 
-func splitFunctions(inputCommands []NVMCommand) []NVMFunction {
+func SplitFunctions(inputCommands []NVMCommand) []NVMFunction {
 	var current []NVMCommand
 	var result []NVMFunction
 	for i := 0; i < len(inputCommands); i++ {
@@ -24,7 +24,7 @@ func splitFunctions(inputCommands []NVMCommand) []NVMFunction {
 	return result
 }
 
-func substituteFunctionIndices(function []NVMFunction) []NVMFunction {
+func SubstituteFunctionIndices(function []NVMFunction) []NVMFunction {
 	var result = function
 	var functionNames []string
 	var counter = 0
@@ -66,7 +66,7 @@ func generateLabels(function *NVMFunction) {
 	for i := 0; i < len(function.commands); i++ {
 		if function.commands[i].commandName == "LABEL" {
 			function.labels = append(function.labels, i)
-			function.commands[i] = generateNVMCommand("NOOP")
+			function.commands[i] = GenerateNVMCommand("NOOP")
 		}
 	}
 }

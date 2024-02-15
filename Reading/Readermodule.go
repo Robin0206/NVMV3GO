@@ -1,13 +1,14 @@
-package main
+package Reading
 
 import (
+	"NVMV3/Executor"
 	"bufio"
 	"fmt"
 	"os"
 )
 
-func read(path string) []NVMCommand {
-	var result []NVMCommand
+func Read(path string) []Executor.NVMCommand {
+	var result []Executor.NVMCommand
 	file, err := os.Open(path)
 	if err != nil {
 		fmt.Println(err)
@@ -15,7 +16,7 @@ func read(path string) []NVMCommand {
 	fileScanner := bufio.NewScanner(file)
 	fileScanner.Split(bufio.ScanLines)
 	for fileScanner.Scan() {
-		currentCommand := generateNVMCommand(fileScanner.Text())
+		currentCommand := Executor.GenerateNVMCommand(fileScanner.Text())
 		result = append(result, currentCommand)
 	}
 	err = file.Close()

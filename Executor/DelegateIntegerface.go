@@ -1,4 +1,4 @@
-package main
+package Executor
 
 type NVMDelegate interface {
 	setMachine(executor *NVMExecutor)

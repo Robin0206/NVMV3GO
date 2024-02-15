@@ -1,0 +1,36 @@
+func primeSieve(bool marked.1000, int n) with(
+	int(p, i, sum),
+	bool(found, buffer)
+){
+	p = 2
+	while p > n{
+		i = p * p
+		while i < n{
+			aSet(marked, i, true)
+			i = i + p
+		}
+		i = p + 1
+		aGet(found, marked, i)
+		while found == true{
+			i = i + 1
+			found = aGet(marked, i)
+		}
+	}
+	sum = 0
+	for j from 0 to n{
+		aGet(buffer, marked, j)
+		if buffer{
+			sum = sum + 1
+		}
+	}
+	return sum
+}
+func main() with(
+	int(result, n),
+	bool(marked.1000)
+){
+	result = 0
+	n = 1000
+	result = primeSieve(marked, n)
+	println(result)
+}

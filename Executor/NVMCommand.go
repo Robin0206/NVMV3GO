@@ -1,4 +1,4 @@
-package main
+package Executor
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ type NVMCommand struct {
 	commandindex uint32
 }
 
-func generateNVMCommand(inputLine string) NVMCommand {
+func GenerateNVMCommand(inputLine string) NVMCommand {
 	var splitted = strings.Split(inputLine, " ")
 	var commandName = splitted[0]
 	var args []string
