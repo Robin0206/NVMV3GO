@@ -24,8 +24,8 @@ ADD c a b
 SUB n n oneBuffer
 SUB nBuffer n twoBuffer
 GREATERTHAN grtBuffer nBuffer zeroBuffer
-BEQ grtBuffer true loopLabel
 PRINT c
+BEQ grtBuffer true loopLabel
 FEND
 MAIN
 REFA n 2 0

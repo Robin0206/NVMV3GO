@@ -75,6 +75,6 @@ func (this *NVMFunction) print() {
 	fmt.Println("================================")
 	fmt.Println("Name: " + this.name)
 	for i := 0; i < len(this.commands); i++ {
-		this.commands[i].print()
+		this.commands[i].Print()
 	}
 }

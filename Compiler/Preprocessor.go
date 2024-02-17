@@ -14,6 +14,7 @@ func (this *Preprocessor) ProcessLines(input []string) []string {
 	}
 	return result
 }
+
 func GeneratePreprocessor() Preprocessor {
 	var result Preprocessor
 

@@ -1,6 +1,8 @@
 package Compiler
 
-import "strconv"
+import (
+	"strconv"
+)
 
 type VariableNameConverter struct {
 	counter int
@@ -25,16 +27,18 @@ func generateVariableNameConverter() *VariableNameConverter {
 func (this *VariableNameConverter) substituteNameWithNumber(tokens []Token, index int) []Token {
 	var counterStr = strconv.Itoa(this.counter)
 	var result []Token
+	var varName = tokens[index].content
 	tokens[index].content = counterStr
 	tokens[index].tokenType = NUMBER
 	for _, token := range tokens {
-		if token.tokenType != NAME && token.content == tokens[index].content {
+		if token.content == varName {
 			result = append(result, generateToken(counterStr, NUMBER))
 		} else {
 			result = append(result, token)
 		}
 	}
 	this.counter++
+	counterStr = strconv.Itoa(this.counter)
 	return result
 }
 

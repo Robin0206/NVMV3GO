@@ -17,6 +17,7 @@ type NVMExecutor struct {
 
 func GenerateExecutor(functions []NVMFunction) *NVMExecutor {
 	var result NVMExecutor
+	functions = SubstituteFunctionIndices(functions)
 	for i := 0; i < len(functions); i++ {
 		result.functions = append(result.functions, functions[i])
 	}
@@ -158,7 +159,6 @@ func (execPtr *NVMExecutor) Run() {
 	var currentCommand NVMCommand
 	for !execPtr.stop && len(execPtr.stack) > 0 {
 		currentCommand = execPtr.stack[len(execPtr.stack)-1].function.commands[execPtr.stack[len(execPtr.stack)-1].programCounter]
-		currentCommand.print()
 		//fmt.Println(currentCommand.commandName)
 		switch len(currentCommand.arguments) {
 		case 0:

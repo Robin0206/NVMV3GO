@@ -42,7 +42,7 @@ func GenerateNVMCommand(inputLine string) NVMCommand {
 		}
 	}
 }
-func (this *NVMCommand) print() {
+func (this *NVMCommand) Print() {
 	fmt.Print("| " + this.commandName + " | ")
 	for i := 0; i < len(this.arguments); i++ {
 		if this.arguments[i].valueType == 0 {

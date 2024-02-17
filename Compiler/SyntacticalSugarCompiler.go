@@ -28,32 +28,33 @@ func (this *SyntacticalSugarCompiler) Compile(input []string) []Executor.NVMComm
 			result = append(result, token)
 		}
 	}
-	var functions = splitToFunctions(result)
+	var functions = splitTokensToFunctions(result)
 	for i := 0; i < len(functions); i++ {
 		for _, stage := range this.syntacticalSugarProcessingChain {
 			functions[i] = stage.processTokens(functions[i])
 		}
 	}
-	result = nil
+	var resultBuffer []Token
 	for _, function := range functions {
 		for _, token := range function {
-			result = append(result, token)
+			resultBuffer = append(resultBuffer, token)
 		}
 	}
-	var resultCommands = tokenDoubleArrToCommandArr(splitToLines(result))
+	var resultCommands = tokenDoubleArrToCommandArr(splitToLines(resultBuffer))
 	return resultCommands
 }
 
-func splitToFunctions(tokens []Token) [][]Token {
+func splitTokensToFunctions(tokens []Token) [][]Token {
 	var result [][]Token
-	result = append(result, []Token{})
+	var current []Token
 	var lines = splitToLines(tokens)
 	for _, line := range lines {
 		for _, token := range line {
-			result[len(result)-1] = append(result[len(result)-1], token)
+			current = append(current, token)
 		}
-		if line[0].content == "FEND" || line[0].content == "MEND" {
-			result = append(result, []Token{})
+		if len(line) > 0 && (line[0].content == "FEND" || line[0].content == "MEND") {
+			result = append(result, current)
+			current = nil
 		}
 	}
 	return result
