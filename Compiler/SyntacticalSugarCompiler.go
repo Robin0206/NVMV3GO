@@ -13,6 +13,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 	result.preprocessor = GeneratePreprocessor()
 	result.lexer = generateLexer()
 	result.syntacticalSugarProcessingChain = []SyntacticalSugarStage{
+		&FunctionSignatureConverter{},
 		&BracketAndCommaRemover{},
 		generateVariableNameConverter(),
 	}
@@ -41,7 +42,8 @@ func (this *SyntacticalSugarCompiler) Compile(input []string) []Executor.NVMComm
 			resultBuffer = append(resultBuffer, token)
 		}
 	}
-	var resultCommands = tokenDoubleArrToCommandArr(splitToLines(resultBuffer))
+	var resultLines = splitToLines(resultBuffer)
+	var resultCommands = tokenDoubleArrToCommandArr(resultLines)
 	return resultCommands
 }
 
@@ -49,15 +51,17 @@ func splitTokensToFunctions(tokens []Token) [][]Token {
 	var result [][]Token
 	var current []Token
 	var lines = splitToLines(tokens)
-	for _, line := range lines {
-		for _, token := range line {
-			current = append(current, token)
-		}
-		if len(line) > 0 && (line[0].content == "FEND" || line[0].content == "MEND") {
+	for i, line := range lines {
+		if i > 0 && len(line) > 0 && (line[0].content == "func") {
 			result = append(result, current)
 			current = nil
 		}
+		for _, token := range line {
+			current = append(current, token)
+		}
 	}
+	result = append(result, current)
+	current = nil
 	return result
 }
 
