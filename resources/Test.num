@@ -20,10 +20,10 @@ func fib{
     LABEL(loopLabel)
     SETV(a, b)
     SETV(b, c)
-    ADD(c, a, b)
-    SUB(n, n, oneBuffer)
-    SUB(nBuffer, n, twoBuffer)
-    GREATERTHAN(grtBuffer, nBuffer, zeroBuffer)
+    c = a + b
+    n = n - oneBuffer
+    nBuffer = n - twoBuffer
+    grtBuffer = nBuffer > zeroBuffer
     PRINT(c)
     BEQ(grtBuffer, true, loopLabel)
 }
