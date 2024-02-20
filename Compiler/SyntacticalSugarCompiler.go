@@ -13,6 +13,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 	result.preprocessor = GeneratePreprocessor()
 	result.lexer = generateLexer()
 	result.syntacticalSugarProcessingChain = []SyntacticalSugarStage{
+		&BracketAndCommaRemover{},
 		generateVariableNameConverter(),
 	}
 	return result
