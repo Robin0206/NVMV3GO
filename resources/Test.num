@@ -6,20 +6,20 @@ func fib{
     REFA(true, 0, 0)
     REFA(grtBuffer, 0, 0)
     REFA(nBuffer, 2, 0)
-    SET(true, 1)
+    true = 1
     REFA(zeroBuffer, 2, 0)
-    SET(zeroBuffer, 0)
+    zeroBuffer = 0
     REFA(oneBuffer, 2, 0)
-    SET(oneBuffer, 1)
+    oneBuffer = 1
     REFA(twoBuffer, 2, 0)
-    SET(twoBuffer, 2)
-    SET(a, 0)
-    SET(b, 1)
-    SET(c, 1)
+    twoBuffer = 2
+    a = 0
+    b = 1
+    c = 1
     GARG(n, 0)
     LABEL(loopLabel)
-    SETV(a, b)
-    SETV(b, c)
+    a = b
+    b = c
     c = a + b
     n = n - oneBuffer
     nBuffer = n - twoBuffer
@@ -29,7 +29,7 @@ func fib{
 }
 func main{
     REFA(n, 2, 0)
-    SET(n, 30)
+    n = 30
     PARG(n)
     CALL(fib)
 }
