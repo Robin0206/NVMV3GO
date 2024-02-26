@@ -40,7 +40,7 @@ func convertSetVLine(line []Token) []Token {
 	return result
 }
 
-func containsOperator(line []Token) bool {
+func containsOperatorOtherThanSingleEquals(line []Token) bool {
 	for _, token := range line {
 		if token.tokenType == OPERATOR_PLUS ||
 			token.tokenType == OPERATOR_MINUS ||
@@ -77,7 +77,7 @@ func convertSetLine(line []Token) []Token {
 }
 
 func isSetVLine(line []Token) bool {
-	return !containsOperator(line) && !containsNumber(line) && containsSingleEquals(line)
+	return !containsOperatorOtherThanSingleEquals(line) && !containsNumber(line) && containsSingleEquals(line)
 }
 
 func containsSingleEquals(line []Token) bool {
@@ -99,5 +99,5 @@ func containsNumber(line []Token) bool {
 }
 
 func isSetLine(line []Token) bool {
-	return !containsOperator(line) && containsNumber(line) && containsSingleEquals(line)
+	return !containsOperatorOtherThanSingleEquals(line) && containsNumber(line) && containsSingleEquals(line)
 }
