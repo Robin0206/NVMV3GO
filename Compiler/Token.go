@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+const BOOL = 0
+const BYTE = 1
+const INT = 2
+const REAL = 3
+
 const CURLY_BRACE_LEFT_STRING = "{"
 const CURLY_BRACE_RIGHT_STRING = "}"
 const BRACE_RIGHT_STRING = ")"
@@ -83,4 +88,11 @@ func generateToken(content string, tokenType int) Token {
 
 func (this *Token) Print() {
 	fmt.Println(this.content + " " + strconv.Itoa(this.tokenType))
+}
+
+func (this *Token) isOperator() bool {
+	return this.tokenType >= 4 && this.tokenType <= 18
+}
+func (this *Token) isOperatorOtherThanSingleEquals() bool {
+	return this.tokenType >= 4 && this.tokenType <= 18 && this.tokenType != OPERATOR_SINGLE_EQUALS
 }

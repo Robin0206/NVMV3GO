@@ -1,6 +1,10 @@
 package Compiler
 
-import "NVMV3/Executor"
+import (
+	"NVMV3/Executor"
+	"fmt"
+	"strconv"
+)
 
 type SyntacticalSugarCompiler struct {
 	preprocessor                    Preprocessor
@@ -13,6 +17,8 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 	result.preprocessor = GeneratePreprocessor()
 	result.lexer = generateLexer()
 	result.syntacticalSugarProcessingChain = []SyntacticalSugarStage{
+		generateExpressionSimplifier(),
+		generateInlineNumberConverter(),
 		&SetConverter{},
 		&OperationConverter{},
 		&RefaUpPuller{},
@@ -37,6 +43,7 @@ func (this *SyntacticalSugarCompiler) Compile(input []string) []Executor.NVMComm
 	for i := 0; i < len(functions); i++ {
 		for _, stage := range this.syntacticalSugarProcessingChain {
 			functions[i] = stage.processTokens(functions[i])
+			printTokens(functions[i])
 		}
 	}
 	var resultBuffer []Token
@@ -84,4 +91,56 @@ func tokenLineToCommand(tokenLine []Token) Executor.NVMCommand {
 		}
 	}
 	return Executor.GenerateNVMCommand(resultLine)
+}
+func generateRefaLine(allocate string, varType int) []Token {
+	var result []Token
+	result = append(result, generateToken("REFA", SYSTEM_FUNCTION))
+	result = append(result, generateToken("(", BRACE_LEFT))
+	result = append(result, generateToken(allocate, NAME))
+	result = append(result, generateToken(",", COMMA))
+	result = append(result, generateToken(strconv.Itoa(varType), NUMBER))
+	result = append(result, generateToken(",", COMMA))
+	result = append(result, generateToken("0", NUMBER))
+	result = append(result, generateToken(")", BRACE_RIGHT))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+
+func generateSetLine(name, value string) []Token {
+	var result []Token
+	result = append(result, generateToken(name, NAME))
+	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
+	result = append(result, generateToken(value, NUMBER))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+
+func printTokens(tokens []Token) {
+	fmt.Println("==================================================")
+	var tabLevel = 0
+	for _, token := range tokens {
+
+		if token.tokenType == CURLY_BRACE_RIGHT {
+			fmt.Println()
+			tabLevel--
+			for i := 0; i < tabLevel; i++ {
+				fmt.Print("\t")
+			}
+		}
+		fmt.Print(token.content + " ")
+		if token.tokenType == CURLY_BRACE_LEFT {
+			fmt.Println()
+			tabLevel++
+			for i := 0; i < tabLevel; i++ {
+				fmt.Print("\t")
+			}
+		}
+		if token.tokenType == SEMICOLON {
+			fmt.Println()
+			for i := 0; i < tabLevel; i++ {
+				fmt.Print("\t")
+			}
+		}
+	}
+	fmt.Println()
 }
