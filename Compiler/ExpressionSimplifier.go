@@ -1,15 +1,13 @@
 package Compiler
 
 import (
-	"fmt"
-	"os"
 	"strconv"
 )
 
 type ExpressionSimplifier struct {
-	newAllocations        []Token
-	currentAllocationType int
-	counter               int
+	newAllocations      []Token
+	newAllocationsTypes []int
+	counter             int
 }
 
 func generateExpressionSimplifier() *ExpressionSimplifier {
@@ -36,8 +34,8 @@ func (this *ExpressionSimplifier) processTokens(input []Token) []Token {
 			}
 		}
 		//add the new refaLines
-		for _, varNameToken := range this.newAllocations {
-			resultBuffer = append(resultBuffer, generateRefaLine(varNameToken.content, this.currentAllocationType))
+		for index, varNameToken := range this.newAllocations {
+			resultBuffer = append(resultBuffer, generateRefaLine(varNameToken.content, this.newAllocationsTypes[index]))
 		}
 		//add the content after the last refa until the new expression
 		var write = false
@@ -83,12 +81,7 @@ func (this *ExpressionSimplifier) processTokens(input []Token) []Token {
 // sets the new refas
 // sets the new refa type
 func (this *ExpressionSimplifier) convertExpression(line []Token, wholeFunction [][]Token) [][]Token {
-	this.currentAllocationType = getType(line[0], wholeFunction)
-	if this.currentAllocationType == -1 {
-		fmt.Println("ERROR: ExpressionSimplifier cant determine type.")
-		os.Exit(0)
-	}
-	return this.simplify(line[0], extractExpression(line))
+	return this.simplify(line[0], extractExpression(line), wholeFunction)
 }
 
 func extractExpression(line []Token) []Token {
@@ -99,7 +92,7 @@ func extractExpression(line []Token) []Token {
 	return result
 }
 
-func (this *ExpressionSimplifier) simplify(varName Token, expression []Token) [][]Token {
+func (this *ExpressionSimplifier) simplify(varName Token, expression []Token, wholeFunction [][]Token) [][]Token {
 	var result []Token
 	var reversePolish = this.shuntingYard(expression)
 	var stack []Token
@@ -111,7 +104,7 @@ func (this *ExpressionSimplifier) simplify(varName Token, expression []Token) []
 			stack = stack[:(len(stack) - 1)]
 			var left = stack[len(stack)-1]
 			stack = stack[:(len(stack) - 1)]
-			expressionConversionResult = this.constructExpression(left, right, token)
+			expressionConversionResult = this.constructExpression(left, right, token, wholeFunction)
 			for _, expressionToken := range expressionConversionResult {
 				result = append(result, expressionToken)
 			}
@@ -124,7 +117,7 @@ func (this *ExpressionSimplifier) simplify(varName Token, expression []Token) []
 	return splitToLines(result)
 }
 
-func (this *ExpressionSimplifier) constructExpression(left, right, operator Token) []Token {
+func (this *ExpressionSimplifier) constructExpression(left, right, operator Token, wholeFunction [][]Token) []Token {
 	var result []Token
 	var buffer = generateToken("____expressionBuffer_"+strconv.Itoa(this.counter), NAME)
 	result = append(result, buffer)
@@ -133,16 +126,23 @@ func (this *ExpressionSimplifier) constructExpression(left, right, operator Toke
 	result = append(result, operator)
 	result = append(result, right)
 	result = append(result, generateToken(";", SEMICOLON))
+	var allocationType = this.getType(left, wholeFunction)
 	this.newAllocations = append(this.newAllocations, buffer)
+	this.newAllocationsTypes = append(this.newAllocationsTypes, allocationType)
 	this.counter++
 	return result
 }
 
-func getType(varName Token, wholeFunction [][]Token) int {
+func (this *ExpressionSimplifier) getType(varName Token, wholeFunction [][]Token) int {
 	for _, line := range wholeFunction {
 		if line[0].content == "REFA" && line[2].content == varName.content {
 			result, _ := strconv.ParseInt(line[4].content, 10, 64)
 			return int(result)
+		}
+	}
+	for index, refaName := range this.newAllocations {
+		if varName.content == refaName.content {
+			return this.newAllocationsTypes[index]
 		}
 	}
 	return -1

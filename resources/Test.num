@@ -4,19 +4,16 @@ func fib{
     REFA(c, 2, 0)
     REFA(n, 2, 0)
     REFA(true, 0, 0)
-    REFA(grtBuffer, 0, 0)
-    REFA(nBuffer, 2, 0)
     true = 1
     a = 0
     b = 1
     c = 1
     GARG(n, 0)
-    while nBuffer > 0{
+    while n - 2 > 0{
         a = b
         b = c
         c = (a + b) * 2
         n = n - 1
-        nBuffer = n - 2
     }
     PRINT(c)
 }
