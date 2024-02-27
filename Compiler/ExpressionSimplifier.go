@@ -19,7 +19,7 @@ func generateExpressionSimplifier() *ExpressionSimplifier {
 }
 
 func (this *ExpressionSimplifier) processTokens(input []Token) []Token {
-	printTokens(input)
+	//printTokens(input)
 	var inputLines = splitToLines(input)
 	var expressionLineIndex = getExpressionLineIndex(inputLines)
 	var resultBuffer [][]Token

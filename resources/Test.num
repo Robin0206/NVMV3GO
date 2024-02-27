@@ -14,7 +14,7 @@ func fib{
     LABEL(loopLabel)
     a = b
     b = c
-    c = (a + b) * (a + b)
+    c = (a + b) * 2
     n = n - 1
     nBuffer = n - 2
     grtBuffer = nBuffer > 0
@@ -23,7 +23,7 @@ func fib{
 }
 func main{
     REFA(n, 2, 0)
-    n = 30
+    n = 20
     PARG(n)
     CALL(fib)
 }

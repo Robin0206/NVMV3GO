@@ -43,7 +43,7 @@ func (this *SyntacticalSugarCompiler) Compile(input []string) []Executor.NVMComm
 	for i := 0; i < len(functions); i++ {
 		for _, stage := range this.syntacticalSugarProcessingChain {
 			functions[i] = stage.processTokens(functions[i])
-			printTokens(functions[i])
+			//printTokens(functions[i])
 		}
 	}
 	var resultBuffer []Token
