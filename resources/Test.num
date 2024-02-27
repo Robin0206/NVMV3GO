@@ -11,14 +11,13 @@ func fib{
     b = 1
     c = 1
     GARG(n, 0)
-    LABEL(loopLabel)
-    a = b
-    b = c
-    c = (a + b) * 2
-    n = n - 1
-    nBuffer = n - 2
-    grtBuffer = nBuffer > 0
-    BEQ(grtBuffer, true, loopLabel)
+    while nBuffer > 0{
+        a = b
+        b = c
+        c = (a + b) * 2
+        n = n - 1
+        nBuffer = n - 2
+    }
     PRINT(c)
 }
 func main{

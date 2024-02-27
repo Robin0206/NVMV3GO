@@ -1,0 +1,17 @@
+//before
+while expression{
+	//body
+}
+//after
+
+//before
+expressionBuffer = expression
+beq(expressionbuffer, true, whilebody)
+beq(true, true, afterwhilebody)
+label(whilebody)
+	//body
+	expressionBuffer = expression
+	beq(expressionbuffer, true, whilebody)
+label(afterwhilebody)
+//after
+
