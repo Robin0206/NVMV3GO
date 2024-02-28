@@ -2,6 +2,7 @@ package Executor
 
 import (
 	"fmt"
+	"time"
 )
 
 type NVMExecutor struct {
@@ -155,11 +156,20 @@ func (execPtr *NVMExecutor) fillDelegateTable() {
 
 }
 
-func (execPtr *NVMExecutor) Run() {
+func (execPtr *NVMExecutor) Run(debugPrint bool) {
+	if debugPrint {
+		for _, function := range execPtr.functions {
+			function.print()
+		}
+	}
+	fmt.Println("=====================================================")
 	var currentCommand NVMCommand
 	for !execPtr.stop && len(execPtr.stack) > 0 {
 		currentCommand = execPtr.stack[len(execPtr.stack)-1].function.commands[execPtr.stack[len(execPtr.stack)-1].programCounter]
-		//fmt.Println(currentCommand.commandName)
+		if debugPrint {
+			currentCommand.Print()
+		}
+
 		switch len(currentCommand.arguments) {
 		case 0:
 			execPtr.delegateTable[currentCommand.commandindex].runNoArg(&execPtr.stack[len(execPtr.stack)-1])
@@ -186,7 +196,9 @@ func (execPtr *NVMExecutor) Run() {
 			)
 			break
 		}
-
+		if debugPrint {
+			time.Sleep(10 * time.Millisecond)
+		}
 		execPtr.stack[len(execPtr.stack)-1].programCounter++
 	}
 }

@@ -1,47 +1,45 @@
 package Compiler
 
-import (
-	"strconv"
-)
+import "strconv"
 
-type WhileConverter struct {
+type IfConverter struct {
 	counter int
 }
 
-func generateWhileConverter() *WhileConverter {
-	var result WhileConverter
+func generateIfConverter() *IfConverter {
+	var result IfConverter
 	result.counter = 0
 	return &result
 }
 
-func (this *WhileConverter) processTokens(input []Token) []Token {
+func (this *IfConverter) processTokens(input []Token) []Token {
 	var result []Token
 	for _, token := range input {
 		result = append(result, token)
 	}
-	var whileCoordinates = findWhileToken(result)
-	for whileCoordinates != -1 {
-		result = this.substituteWhileAt(result, whileCoordinates)
-		whileCoordinates = findWhileToken(result)
+	var ifCoordinates = findIfToken(result)
+	for ifCoordinates != -1 {
+		result = this.substituteIfAt(result, ifCoordinates)
+		ifCoordinates = findIfToken(result)
 	}
 
 	return result
 }
 
-func (this *WhileConverter) substituteWhileAt(wholeFunction []Token, coordinate int) []Token {
+func (this *IfConverter) substituteIfAt(wholeFunction []Token, coordinate int) []Token {
 	var result []Token
-	var startOfWhile = coordinate
+	var startOfIf = coordinate
 	startOfBlock, endOfBlock := getBlockAfter(coordinate, wholeFunction)
-	var beforeWhile []Token
+	var beforeIf []Token
 	var expression []Token
 	var body []Token
-	var afterWhile []Token
-	//fillBeforeWhile
-	for i := 0; i < startOfWhile; i++ {
-		beforeWhile = append(beforeWhile, wholeFunction[i])
+	var afterIf []Token
+	//fillBeforeIf
+	for i := 0; i < startOfIf; i++ {
+		beforeIf = append(beforeIf, wholeFunction[i])
 	}
 	//fill expression
-	for i := startOfWhile + 1; i < len(wholeFunction); i++ {
+	for i := startOfIf + 1; i < len(wholeFunction); i++ {
 		if wholeFunction[i].tokenType == CURLY_BRACE_LEFT {
 			break
 		}
@@ -53,39 +51,39 @@ func (this *WhileConverter) substituteWhileAt(wholeFunction []Token, coordinate 
 	}
 	//fill after Body
 	for i := endOfBlock + 1; i < len(wholeFunction); i++ {
-		afterWhile = append(afterWhile, wholeFunction[i])
+		afterIf = append(afterIf, wholeFunction[i])
 	}
 	//convert
-	var convertedWhileLoop = this.convertWhileLoop(expression, body)
-	//add before while to result
-	for _, token := range beforeWhile {
+	var convertedIfLoop = this.convertIfStatement(expression, body)
+	//add before if to result
+	for _, token := range beforeIf {
 		result = append(result, token)
 	}
-	//add converted while to result
-	for _, token := range convertedWhileLoop {
+	//add converted if to result
+	for _, token := range convertedIfLoop {
 		result = append(result, token)
 	}
-	//add after while to result
-	for _, token := range afterWhile {
+	//add after if to result
+	for _, token := range afterIf {
 		result = append(result, token)
 	}
 	return result
 }
 
-func findWhileToken(input []Token) int {
+func findIfToken(input []Token) int {
 	for i := 0; i < len(input); i++ {
-		if input[i].content == "while" {
+		if input[i].content == "if" {
 			return i
 		}
 	}
 	return -1
 }
 
-func (this *WhileConverter) convertWhileLoop(expression []Token, body []Token) []Token {
+func (this *IfConverter) convertIfStatement(expression []Token, body []Token) []Token {
 	var result []Token
-	var bufferName = "____while_buffer_" + strconv.Itoa(this.counter)
-	var bodyLabelName = "____while_body_label_" + strconv.Itoa(this.counter)
-	var afterBodyLabel = "____after_while_body_label_" + strconv.Itoa(this.counter)
+	var bufferName = "____if_buffer_" + strconv.Itoa(this.counter)
+	var bodyLabelName = "____if_body_label_" + strconv.Itoa(this.counter)
+	var afterBodyLabel = "____after_if_body_label_" + strconv.Itoa(this.counter)
 
 	//add the refaline for the buffer
 	var refaCall = generateRefaLine(bufferName, BOOL)
@@ -134,25 +132,6 @@ func (this *WhileConverter) convertWhileLoop(expression []Token, body []Token) [
 	for _, token := range body {
 		result = append(result, token)
 	}
-
-	// add the setline for the buffer
-	result = append(result, generateToken(bufferName, NAME))
-	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
-	for _, token := range expression {
-		result = append(result, token)
-	}
-	result = append(result, generateToken(";", SEMICOLON))
-
-	//add the beq to the body
-	result = append(result, generateToken("BEQ", SYSTEM_FUNCTION))
-	result = append(result, generateToken("(", BRACE_LEFT))
-	result = append(result, generateToken(bufferName, NAME))
-	result = append(result, generateToken(",", COMMA))
-	result = append(result, generateToken("true", NAME))
-	result = append(result, generateToken(",", COMMA))
-	result = append(result, generateToken(bodyLabelName, NAME))
-	result = append(result, generateToken(")", BRACE_RIGHT))
-	result = append(result, generateToken(";", SEMICOLON))
 	//add the label after the body
 	result = append(result, generateToken("LABEL", SYSTEM_FUNCTION))
 	result = append(result, generateToken("(", BRACE_LEFT))

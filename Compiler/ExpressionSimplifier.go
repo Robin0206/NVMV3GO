@@ -23,6 +23,7 @@ func (this *ExpressionSimplifier) processTokens(input []Token) []Token {
 	var resultBuffer [][]Token
 	resultBuffer = inputLines
 	for expressionLineIndex != -1 {
+		//printTokens(flatten(inputLines))
 		resultBuffer = nil
 		var convertedExpression = this.convertExpression(inputLines[expressionLineIndex], inputLines)
 		//until the last old refaLine

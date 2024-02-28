@@ -1,17 +1,26 @@
 //before
-while expression{
+if expression{
 	//body
+}else{
+    //elsebody
 }
 //after
 
 //before
-expressionBuffer = expression
-beq(expressionbuffer, true, whilebody)
-beq(true, true, afterwhilebody)
-label(whilebody)
-	//body
-	expressionBuffer = expression
-	beq(expressionbuffer, true, whilebody)
-label(afterwhilebody)
-//after
+if expression{
+    //ifbody
+}
+REFA(negatedExpressionBuffer, 0, 0);
+negatedExpressionBuffer = expression;
+NOT(negatedExpressionBuffer, negatedExpressionBuffer);
+if negatedExpressionBuffer{
+    //elsebody
+}
+
+isntead of else insert:
+REFA(negatedExpressionBuffer, 0, 0);
+negatedExpressionBuffer = expression;
+NOT(negatedExpressionBuffer, negatedExpressionBuffer);
+if negatedExpressionBuffer
+
 

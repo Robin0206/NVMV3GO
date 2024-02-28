@@ -21,8 +21,8 @@ func main() {
 	}
 
 	var compiler = Compiler.GenerateSyntacticalSugarCompiler()
-	var commands = compiler.Compile(lines)
+	var commands = compiler.Compile(lines, true)
 	var executor = Executor.GenerateExecutor(Executor.SplitFunctions(commands))
-	executor.Run()
+	executor.Run(true)
 
 }

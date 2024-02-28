@@ -103,3 +103,26 @@ func getBlockAfter(coordinate int, function []Token) (int, int) {
 	}
 	return start, end
 }
+
+func flatten(lines [][]Token) []Token {
+	var result []Token
+	for _, line := range lines {
+		for _, token := range line {
+			result = append(result, token)
+		}
+	}
+	return result
+}
+
+func substituteNameWithNumber(lines [][]Token, content string, counter int) [][]Token {
+	var inputFlattened = flatten(lines)
+	var resultFlattened []Token
+	for _, token := range inputFlattened {
+		if token.content == content {
+			token.content = strconv.Itoa(counter)
+			token.tokenType = NUMBER
+		}
+		resultFlattened = append(resultFlattened, token)
+	}
+	return splitToLines(resultFlattened)
+}

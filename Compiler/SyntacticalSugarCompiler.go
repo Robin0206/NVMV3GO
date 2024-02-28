@@ -15,6 +15,9 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 	result.preprocessor = GeneratePreprocessor()
 	result.lexer = generateLexer()
 	result.syntacticalSugarProcessingChain = []SyntacticalSugarStage{
+		&TrueAndFalseConverter{},
+		//generateElseConverter(),
+		generateIfConverter(),
 		generateWhileConverter(),
 		generateExpressionSimplifier(),
 		generateInlineNumberConverter(),
@@ -24,13 +27,25 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 		&FunctionSignatureConverter{},
 		&BracketAndCommaRemover{},
 		generateVariableNameConverter(),
+		&LabelSubstitutor{},
 	}
 	return result
 }
 
-func (this *SyntacticalSugarCompiler) Compile(input []string) []Executor.NVMCommand {
+func (this *SyntacticalSugarCompiler) Compile(input []string, debugPrint bool) []Executor.NVMCommand {
 	var tempResult []string
-	tempResult = this.preprocessor.ProcessLines(input)
+
+	//remove blank lines
+	for _, line := range input {
+		if len(line) > 0 {
+			tempResult = append(tempResult, line)
+		}
+	}
+
+	//run preprocessor
+	tempResult = this.preprocessor.ProcessLines(tempResult)
+
+	//tokenize
 	var result []Token
 	for _, line := range tempResult {
 		var tokens = this.lexer.tokenize(line)
@@ -38,19 +53,27 @@ func (this *SyntacticalSugarCompiler) Compile(input []string) []Executor.NVMComm
 			result = append(result, token)
 		}
 	}
+	//run SyntacticalSugarChain
 	var functions = splitTokensToFunctions(result)
+	if debugPrint {
+		printTokens(functions[0])
+	}
 	for i := 0; i < len(functions); i++ {
 		for _, stage := range this.syntacticalSugarProcessingChain {
-			printTokens(functions[i])
 			functions[i] = stage.processTokens(functions[i])
+			if debugPrint {
+				printTokens(functions[i])
+			}
 		}
 	}
+	//flatten functions to 1d Token Array
 	var resultBuffer []Token
 	for _, function := range functions {
 		for _, token := range function {
 			resultBuffer = append(resultBuffer, token)
 		}
 	}
+	//split them again to lines
 	var resultLines = splitToLines(resultBuffer)
 	var resultCommands = tokenDoubleArrToCommandArr(resultLines)
 	return resultCommands

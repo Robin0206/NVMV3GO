@@ -17,7 +17,6 @@ func (this *Preprocessor) ProcessLines(input []string) []string {
 
 func GeneratePreprocessor() Preprocessor {
 	var result Preprocessor
-
 	result.stages = append(result.stages, &WhitespaceAdder{})
 	result.stages = append(result.stages, &SemicolonAdder{})
 	return result
