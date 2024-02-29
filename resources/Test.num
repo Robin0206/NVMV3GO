@@ -1,25 +1,25 @@
 
 func fib{
-    REFA(a, 2, 0)
-    REFA(b, 2, 0)
-    REFA(c, 2, 0)
+    REFA(a, 3, 0)
+    REFA(b, 3, 0)
+    REFA(c, 3, 0)
     REFA(n, 2, 0)
     REFA(k, 0, 0)
-    a = 0
-    b = 1
-    c = 1
+    a = 0.0
+    b = 1.0
+    c = 1.0
     GARG(n, 0)
     GARG(k, 1)
     if k{
         while n - 2 > 0{
                 a = b
                 b = c
-                c = (a + b) * 2
+                c = (a + b) * 2.0
                 n = n - 1
                 PRINT(c)
        }
     }
-    if k{
+    else{
         while n - 2 > 0{
             a = b
             b = c
@@ -33,8 +33,8 @@ func fib{
 func main{
     REFA(n, 2, 0)
     REFA(k, 0, 0)
-    n = 10
-    k = false
+    n = 30
+    k = true
     PARG(n)
     PARG(k)
     CALL(fib)

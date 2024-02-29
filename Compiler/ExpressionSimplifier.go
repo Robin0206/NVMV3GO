@@ -68,6 +68,7 @@ func (this *ExpressionSimplifier) processTokens(input []Token) []Token {
 		}
 		expressionLineIndex = getExpressionLineIndex(resultBuffer)
 		this.newAllocations = nil
+		this.newAllocationsTypes = nil
 	}
 	var result []Token
 	for _, line := range inputLines {

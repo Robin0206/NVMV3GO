@@ -76,7 +76,7 @@ func (this *SET) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArg
 		stackframe.variables[a.integer].integerValue[0] = int32(b.integer)
 		break
 	case 3:
-		stackframe.variables[a.integer].realValue[0] = float64(b.integer)
+		stackframe.variables[a.integer].realValue[0] = b.realValue
 		break
 	}
 }
@@ -94,6 +94,9 @@ func (this *SETV) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	fmt.Println("ERROR: Delegate SETV, Method runOneArg called!")
 }
 func (this *SETV) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
+	if stackframe.variables[a.integer].valueType != stackframe.variables[b.integer].valueType {
+		fmt.Println("ERROR: Types of args dont match in SETV")
+	}
 	switch stackframe.variables[a.integer].valueType {
 	case 0:
 		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[0]
@@ -318,7 +321,7 @@ func (this *BINOR) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMA
 func (this *BINOR) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
 	switch stackframe.variables[b.integer].valueType {
 	case 0:
-		fmt.Println("ERROR: Called ADD on bool values")
+		fmt.Println("ERROR: Called BINOR on bool values")
 		break
 	case 1:
 		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] | stackframe.variables[c.integer].byteValue[0]
@@ -347,7 +350,7 @@ func (this *BINAND) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVM
 func (this *BINAND) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
 	switch stackframe.variables[b.integer].valueType {
 	case 0:
-		fmt.Println("ERROR: Called ADD on bool values")
+		fmt.Println("ERROR: Called BINAND on bool values")
 		break
 	case 1:
 		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] & stackframe.variables[c.integer].byteValue[0]
@@ -677,6 +680,7 @@ type FEND struct{ executor *NVMExecutor }
 func (this *FEND) setMachine(executor *NVMExecutor) { this.executor = executor }
 func (this *FEND) runNoArg(stackframe *NVMStackframe) {
 	stackframe.executor.stack = stackframe.executor.stack[:len(stackframe.executor.stack)-1]
+	stackframe.executor.argRegister = nil
 }
 func (this *FEND) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	fmt.Println("ERROR: Delegate FEND, Method runOneArg called!")

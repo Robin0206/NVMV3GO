@@ -48,7 +48,7 @@ func (this *NVMCommand) Print() {
 		if this.arguments[i].valueType == 0 {
 			fmt.Printf("%d | ", this.arguments[i].integer)
 		} else {
-			fmt.Printf("%d | ", this.arguments[i].integer)
+			fmt.Printf("%f | ", this.arguments[i].realValue)
 		}
 	}
 	fmt.Println()

@@ -17,6 +17,6 @@ func generateNVMArgument(value string) NVMArgument {
 		return NVMArgument{realValue: parsedValue, integer: 0, valueType: 1}
 	} else {
 		parsedValue, _ := strconv.ParseInt(value, 10, 32)
-		return NVMArgument{realValue: 0.0, integer: int(parsedValue), valueType: 1}
+		return NVMArgument{realValue: 0.0, integer: int(parsedValue), valueType: 0}
 	}
 }

@@ -16,7 +16,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 	result.lexer = generateLexer()
 	result.syntacticalSugarProcessingChain = []SyntacticalSugarStage{
 		&TrueAndFalseConverter{},
-		//generateElseConverter(),
+		generateElseConverter(),
 		generateIfConverter(),
 		generateWhileConverter(),
 		generateExpressionSimplifier(),
@@ -24,6 +24,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 		&SetConverter{},
 		&OperationConverter{},
 		&RefaUpPuller{},
+		&MultipleRefaRemover{},
 		&FunctionSignatureConverter{},
 		&BracketAndCommaRemover{},
 		generateVariableNameConverter(),
