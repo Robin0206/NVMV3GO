@@ -1,4 +1,3 @@
-
 func fib(int n, bool k){
     REFA(a, 3, 0)
     REFA(b, 3, 0)

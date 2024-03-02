@@ -19,7 +19,6 @@ func main() {
 	for fileScanner.Scan() {
 		lines = append(lines, fileScanner.Text())
 	}
-
 	var compiler = Compiler.GenerateSyntacticalSugarCompiler()
 	var commands = compiler.Compile(lines, true)
 	var executor = Executor.GenerateExecutor(Executor.SplitFunctions(commands))
