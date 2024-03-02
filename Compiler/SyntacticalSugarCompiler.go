@@ -15,6 +15,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 	result.preprocessor = GeneratePreprocessor()
 	result.lexer = generateLexer()
 	result.syntacticalSugarProcessingChain = []SyntacticalSugarStage{
+		&WithRemover{},
 		&ArgumentRemover{},
 		&TrueAndFalseConverter{},
 		generateElseConverter(),

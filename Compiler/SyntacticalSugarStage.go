@@ -126,3 +126,12 @@ func substituteNameWithNumber(lines [][]Token, content string, counter int) [][]
 	}
 	return splitToLines(resultFlattened)
 }
+
+func lineContainsToken(content string, line []Token) bool {
+	for _, token := range line {
+		if token.content == content {
+			return true
+		}
+	}
+	return false
+}

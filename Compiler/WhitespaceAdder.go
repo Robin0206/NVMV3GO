@@ -17,6 +17,7 @@ func (this *WhitespaceAdder) process(line string) string {
 				!(line[i] == '(' || line[i] == ')' || line[i] == '{' || line[i] == '}') {
 				var toAppend = " " + string(line[i]) + string(line[i+1]) + " "
 				result = result + toAppend
+				i = i + 1
 			} else if strings.Contains(symbols, string(line[i])) {
 				var toAppend = " " + string(line[i]) + " "
 				result = result + toAppend

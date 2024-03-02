@@ -1,38 +1,41 @@
-func fib(int n, bool k){
-    REFA(a, 3, 0)
-    REFA(b, 3, 0)
-    REFA(c, 3, 0)
-    a = 0.0
-    b = 1.0
-    c = 1.0
-    if k{
-        while n - 2 > 0{
-                a = b
-                b = c
-                c = (a + b) * 2.0
-                n = n - 1
-       }
+func firstOnHundredThousandPrimes{
+    REFA(primes, 0, 100000)
+    REFA(i, 2, 0)
+    REFA(j, 2, 0)
+    REFA(p, 2, 0)
+    REFA(n, 2, 0)
+    REFA(boolBuffer, 0, 0)
+    REFA(boolBufferTwo, 0, 0)
+    i = 0
+    n = 100000
+    while i < n{
+        ASET(primes, i, true)
+        i = i + 1
     }
-    else{
-        while n - 2 > 0{
-            a = b
-            b = c
-            c = a + b
-            n = n - 1
+    p = 2
+    while p < n{
+        AGET(boolBuffer, primes, p)
+        j = p * p
+        if boolBuffer{
+            while j < n && j > 0{
+                ASET(primes, j, false)
+                j = j + p
+            }
         }
+        p = p + 1
     }
-    RETURN(c)
+    i = 0
+    j = 0
+    while i < n{
+        AGET(boolBuffer, primes, i)
+        if boolBuffer{
+            j = j + 1
+        }
+        i = i + 1
+    }
+    PRINT(j)
 }
 
 func main{
-    REFA(n, 2, 0)
-    REFA(k, 0, 0)
-    REFA(result, 3, 0)
-    n = 30
-    k = false
-    PARG(n)
-    PARG(k)
-    CALL(fib)
-    RETG(result)
-    PRINT(result)
+    CALL(firstOnHundredThousandPrimes)
 }

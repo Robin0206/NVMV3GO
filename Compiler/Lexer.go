@@ -21,7 +21,6 @@ func (this *Lexer) tokenize(line string) []Token {
 		if tokenType != -1 {
 			result = append(result, generateToken(stringToken, tokenType))
 		}
-
 	}
 	return result
 }

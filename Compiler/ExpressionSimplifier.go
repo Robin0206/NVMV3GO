@@ -128,11 +128,20 @@ func (this *ExpressionSimplifier) constructExpression(left, right, operator Toke
 	result = append(result, operator)
 	result = append(result, right)
 	result = append(result, generateToken(";", SEMICOLON))
-	var allocationType = this.getType(left, wholeFunction)
+	var allocationType int
+	if isOperatorThatAlwaysOutPutsBool(operator) {
+		allocationType = 0
+	} else {
+		allocationType = this.getType(left, wholeFunction)
+	}
 	this.newAllocations = append(this.newAllocations, buffer)
 	this.newAllocationsTypes = append(this.newAllocationsTypes, allocationType)
 	this.counter++
 	return result
+}
+
+func isOperatorThatAlwaysOutPutsBool(operator Token) bool {
+	return operator.tokenType == OPERATOR_DOUBLE_EQUALS || operator.tokenType == OPERATOR_LESS || operator.tokenType == OPERATOR_MORE
 }
 
 func (this *ExpressionSimplifier) getType(varName Token, wholeFunction [][]Token) int {

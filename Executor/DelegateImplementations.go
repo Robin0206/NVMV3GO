@@ -7,10 +7,10 @@ import (
 
 type NOOP struct{ executor *NVMExecutor }
 
-func (this *NOOP) setMachine(executor *NVMExecutor) { this.executor = executor }
-func (this *NOOP) runNoArg(stackframe *NVMStackframe) {
-}
+func (this *NOOP) setMachine(executor *NVMExecutor)   { this.executor = executor }
+func (this *NOOP) runNoArg(stackframe *NVMStackframe) {}
 func (this *NOOP) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
+	var _ = 0
 }
 func (this *NOOP) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
 }
@@ -129,18 +129,19 @@ func (this *ASET) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMAr
 	fmt.Println("ERROR: Delegate ASET, Method runTwoArgs called!")
 }
 func (this *ASET) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
+
 	switch stackframe.variables[a.integer].valueType {
 	case 0:
-		stackframe.variables[a.integer].boolValue[b.integer] = stackframe.variables[c.integer].boolValue[0]
+		stackframe.variables[a.integer].boolValue[stackframe.variables[b.integer].integerValue[0]] = stackframe.variables[c.integer].boolValue[0]
 		break
 	case 1:
-		stackframe.variables[a.integer].byteValue[b.integer] = stackframe.variables[c.integer].byteValue[0]
+		stackframe.variables[a.integer].byteValue[stackframe.variables[b.integer].integerValue[0]] = stackframe.variables[c.integer].byteValue[0]
 		break
 	case 2:
-		stackframe.variables[a.integer].integerValue[b.integer] = stackframe.variables[c.integer].integerValue[0]
+		stackframe.variables[a.integer].integerValue[stackframe.variables[b.integer].integerValue[0]] = stackframe.variables[c.integer].integerValue[0]
 		break
 	case 3:
-		stackframe.variables[a.integer].realValue[b.integer] = stackframe.variables[c.integer].realValue[0]
+		stackframe.variables[a.integer].realValue[stackframe.variables[b.integer].integerValue[0]] = stackframe.variables[c.integer].realValue[0]
 		break
 	}
 }
@@ -160,16 +161,16 @@ func (this *AGET) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMAr
 func (this *AGET) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
 	switch stackframe.variables[a.integer].valueType {
 	case 0:
-		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[c.integer]
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[stackframe.variables[c.integer].integerValue[0]]
 		break
 	case 1:
-		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[c.integer]
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[stackframe.variables[c.integer].integerValue[0]]
 		break
 	case 2:
-		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[c.integer]
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[stackframe.variables[c.integer].integerValue[0]]
 		break
 	case 3:
-		stackframe.variables[a.integer].realValue[0] = stackframe.variables[b.integer].realValue[c.integer]
+		stackframe.variables[a.integer].realValue[0] = stackframe.variables[b.integer].realValue[stackframe.variables[c.integer].integerValue[0]]
 		break
 	}
 }
