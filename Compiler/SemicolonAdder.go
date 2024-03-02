@@ -20,9 +20,14 @@ func (this *SemicolonAdder) shouldHaveSemicolon(line string) bool {
 		"}",
 		"func ",
 		"int ",
+		"int.",
 		"bool ",
+		"bool.",
 		"byte ",
+		"byte.",
 		"real ",
+		"real.",
+		"with",
 	}
 
 	for _, symbol := range keyWords {

@@ -1,11 +1,8 @@
-func firstOnHundredThousandPrimes{
-    REFA(primes, 0, 100000)
-    REFA(i, 2, 0)
-    REFA(j, 2, 0)
-    REFA(p, 2, 0)
-    REFA(n, 2, 0)
-    REFA(boolBuffer, 0, 0)
-    REFA(boolBufferTwo, 0, 0)
+func firstOnHundredThousandPrimes with(
+    bool.100000(primes),
+    int(i, j, p, n),
+    bool(boolBuffer, boolBuffer2)
+){
     i = 0
     n = 100000
     while i < n{
