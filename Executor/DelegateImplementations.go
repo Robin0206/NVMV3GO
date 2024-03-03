@@ -703,20 +703,7 @@ func (this *GARG) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	fmt.Println("ERROR: Delegate GARG, Method runOneArg called!")
 }
 func (this *GARG) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
-	switch stackframe.variables[a.integer].valueType {
-	case 0:
-		stackframe.variables[a.integer].boolValue = stackframe.executor.argRegister[b.integer].boolValue
-		break
-	case 1:
-		stackframe.variables[a.integer].byteValue = stackframe.executor.argRegister[b.integer].byteValue
-		break
-	case 2:
-		stackframe.variables[a.integer].integerValue = stackframe.executor.argRegister[b.integer].integerValue
-		break
-	case 3:
-		stackframe.variables[a.integer].realValue = stackframe.executor.argRegister[b.integer].realValue
-		break
-	}
+	stackframe.variables[a.integer] = stackframe.executor.argRegister[b.integer]
 	if b.integer == len(stackframe.executor.argRegister)-1 {
 		stackframe.executor.argRegister = nil
 	}

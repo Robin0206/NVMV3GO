@@ -19,12 +19,6 @@ func primeTest(bool. primes, int n) with(
         p = p + 1
     }
 }
-func simpleRekuTest(int n){
-    if n > 0{
-        PRINT(n)
-        simpleRekuTest(n - 1)
-    }
-}
 func fibRekuTest(int n) with(
     int(leftResult, rightResult, leftArg, rightArg)
 ){
@@ -38,7 +32,7 @@ func fibRekuTest(int n) with(
 }
 
 func main with(
-    int(n, result, counter),
+    int(n, result, counter, fibRes, k),
     bool.100000(primes)
 ){
     n = 100000
@@ -51,5 +45,8 @@ func main with(
         }
         counter = counter + 1
     }
+    k = 30
+    fibRes = fibRekuTest(k)
+    PRINT(fibRes)
     PRINT(result)
 }
