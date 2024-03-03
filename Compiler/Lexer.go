@@ -58,7 +58,7 @@ func (this *Lexer) determineType(token string) int {
 		"LOGAND",
 		"LOGNOT",
 		"LOGEQ",
-		"PRINTLN",
+		"PRINT",
 		"RETURN",
 		"CALL",
 		"PARG",

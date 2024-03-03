@@ -1,6 +1,5 @@
-func primeTest with(
-    bool.100000(primes),
-    int(result, i, p, n),
+func primeTest(bool.100000 primes, int n) with(
+    int(result, i, p),
     bool(boolBuffer, boolBuffer2)
 ){
     n = 100000
@@ -19,21 +18,11 @@ func primeTest with(
         }
         p = p + 1
     }
-    result = 0
-    i = 0
-    while i < n{
-        if primes.i{
-            result = result + 1
-        }
-        i = i + 1
-    }
-    PRINT(result + 1 - 1)
 }
 func simpleRekuTest(int n){
     if n > 0{
         PRINT(n)
-        PARG(n - 1)
-        CALL(simpleRekuTest)
+        simpleRekuTest(n - 1)
     }
 }
 func fibRekuTest(int n) with(
@@ -42,24 +31,28 @@ func fibRekuTest(int n) with(
     if n < 2{
         RETURN(n)
     }else{
-        leftArg = n - 1
-        PARG(leftArg)
-        CALL(fibRekuTest)
-        RETG(leftResult)
-        rightArg = n - 2
-        PARG(rightArg)
-        CALL(fibRekuTest)
-        RETG(rightResult)
+        rightResult = fibRekuTest(n-1)
+        leftResult = fibRekuTest(n - 2)
         RETURN(leftResult + rightResult)
     }
 }
 
 func main with(
-    int(n)
+    byte(test),
+    int(n, result, counter),
+    bool.100000(primes)
 ){
-    n = 30
-    PARG(n)
-    CALL(fibRekuTest)
-    RETG(n)
-    PRINT(n)
+    test = 63
+    n = 100000
+    primeTest(primes, n)
+    result = 0
+    counter = 0
+    while counter < n{
+        if primes.counter{
+            result = result  + 1
+        }
+        counter = counter + 1
+    }
+    PRINT(result)
+    PRINT(test)
 }

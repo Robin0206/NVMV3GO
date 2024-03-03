@@ -202,3 +202,35 @@ func lineEquals(a []Token, b []Token) bool {
 	}
 	return true
 }
+
+func generatePargLine(arg []Token) []Token {
+	var result []Token
+	result = append(result, generateToken("PARG", SYSTEM_FUNCTION))
+	result = append(result, generateToken("(", BRACE_LEFT))
+	for _, token := range arg {
+		result = append(result, token)
+	}
+	result = append(result, generateToken(")", BRACE_RIGHT))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+
+func generateCallLine(name Token) []Token {
+	var result []Token
+	result = append(result, generateToken("CALL", SYSTEM_FUNCTION))
+	result = append(result, generateToken("(", BRACE_LEFT))
+	result = append(result, name)
+	result = append(result, generateToken(")", BRACE_RIGHT))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+
+func generateRetgLine(name Token) []Token {
+	var result []Token
+	result = append(result, generateToken("RETG", SYSTEM_FUNCTION))
+	result = append(result, generateToken("(", BRACE_LEFT))
+	result = append(result, name)
+	result = append(result, generateToken(")", BRACE_RIGHT))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}

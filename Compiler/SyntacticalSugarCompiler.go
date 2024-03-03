@@ -18,6 +18,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 		&WithRemover{},
 		&ArgumentRemover{},
 		&TrueAndFalseConverter{},
+		&UserFunctionCallConverter{0},
 		generateElseConverter(),
 		generateIfConverter(),
 		generateWhileConverter(),
