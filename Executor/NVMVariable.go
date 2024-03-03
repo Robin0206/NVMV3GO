@@ -37,10 +37,7 @@ func generateRealVariable(length int) NVMVariable {
 		result.realValue = append(result.realValue, 0)
 		result.isArray = false
 	} else {
-		for i := 0; i < length; i++ {
-			result.realValue = append(result.realValue, 0)
-
-		}
+		result.realValue = make([]float64, length)
 		result.isArray = true
 		result.isResizable = false
 	}
@@ -59,10 +56,7 @@ func generateIntegerVariable(length int) NVMVariable {
 		result.integerValue = append(result.integerValue, 0)
 		result.isArray = false
 	} else {
-		for i := 0; i < length; i++ {
-			result.integerValue = append(result.integerValue, 0)
-
-		}
+		result.integerValue = make([]int32, length)
 		result.isArray = true
 	}
 	return result
@@ -80,10 +74,7 @@ func generateByteVariable(length int) NVMVariable {
 		result.byteValue = append(result.byteValue, 0)
 		result.isArray = false
 	} else {
-		for i := 0; i < length; i++ {
-			result.byteValue = append(result.byteValue, 0)
-
-		}
+		result.byteValue = make([]uint8, length)
 		result.isArray = true
 	}
 	return result
@@ -101,10 +92,7 @@ func generateBoolVariable(length int) NVMVariable {
 		result.boolValue = append(result.boolValue, false)
 		result.isArray = false
 	} else {
-		for i := 0; i < length; i++ {
-			result.boolValue = append(result.boolValue, false)
-
-		}
+		result.boolValue = make([]bool, length)
 		result.isArray = true
 	}
 	return result
