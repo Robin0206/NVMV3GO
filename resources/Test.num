@@ -38,11 +38,9 @@ func fibRekuTest(int n) with(
 }
 
 func main with(
-    byte(test),
     int(n, result, counter),
     bool.100000(primes)
 ){
-    test = 63
     n = 100000
     primeTest(primes, n)
     result = 0
@@ -54,5 +52,4 @@ func main with(
         counter = counter + 1
     }
     PRINT(result)
-    PRINT(test)
 }

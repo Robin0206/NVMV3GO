@@ -7,6 +7,7 @@ type NVMVariable struct {
 	realValue    []float64
 	valueType    uint8
 	isArray      bool
+	isResizable  bool
 }
 
 func generateNVMVariable(valueType, length int) NVMVariable {
@@ -27,6 +28,11 @@ func generateNVMVariable(valueType, length int) NVMVariable {
 func generateRealVariable(length int) NVMVariable {
 	var result NVMVariable
 	result.valueType = 3
+	if length == 0 {
+		result.isArray = true
+		result.isResizable = true
+		return result
+	}
 	if length == 1 {
 		result.realValue = append(result.realValue, 0)
 		result.isArray = false
@@ -36,6 +42,7 @@ func generateRealVariable(length int) NVMVariable {
 
 		}
 		result.isArray = true
+		result.isResizable = false
 	}
 	return result
 }
@@ -43,6 +50,11 @@ func generateRealVariable(length int) NVMVariable {
 func generateIntegerVariable(length int) NVMVariable {
 	var result NVMVariable
 	result.valueType = 2
+	if length == 0 {
+		result.isArray = true
+		result.isResizable = true
+		return result
+	}
 	if length == 1 {
 		result.integerValue = append(result.integerValue, 0)
 		result.isArray = false
@@ -59,6 +71,11 @@ func generateIntegerVariable(length int) NVMVariable {
 func generateByteVariable(length int) NVMVariable {
 	var result NVMVariable
 	result.valueType = 1
+	if length == 0 {
+		result.isArray = true
+		result.isResizable = true
+		return result
+	}
 	if length == 1 {
 		result.byteValue = append(result.byteValue, 0)
 		result.isArray = false
@@ -75,6 +92,11 @@ func generateByteVariable(length int) NVMVariable {
 func generateBoolVariable(length int) NVMVariable {
 	var result NVMVariable
 	result.valueType = 0
+	if length == 0 {
+		result.isArray = true
+		result.isResizable = true
+		return result
+	}
 	if length == 1 {
 		result.boolValue = append(result.boolValue, false)
 		result.isArray = false

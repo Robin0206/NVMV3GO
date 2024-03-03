@@ -544,7 +544,7 @@ func (this *PRINT) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 		fmt.Println(stackframe.variables[a.integer].boolValue[0])
 		break
 	case 1:
-		fmt.Println(stackframe.variables[a.integer].byteValue[0])
+		fmt.Printf("%c\n", stackframe.variables[a.integer].byteValue[0])
 		break
 	case 2:
 		fmt.Println(stackframe.variables[a.integer].integerValue[0])

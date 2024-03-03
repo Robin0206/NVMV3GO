@@ -1,15 +1,1 @@
-//before
-for i from 0 to 100{
-    //body
-}
-//after
 
-
-//before
-REFA(i, 2, 0)
-i = 0
-while i < 100{
-    //body
-    i = i + 1
-}
-//after
