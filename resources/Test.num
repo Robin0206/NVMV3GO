@@ -1,4 +1,4 @@
-func primeTest(bool.100000 primes, int n) with(
+func primeTest(bool. primes, int n) with(
     int(result, i, p),
     bool(boolBuffer, boolBuffer2)
 ){
