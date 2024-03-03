@@ -1,4 +1,4 @@
-func firstOnHundredThousandPrimes with(
+func primeTest with(
     bool.100000(primes),
     int(result, i, p, n),
     bool(boolBuffer, boolBuffer2)
@@ -29,7 +29,37 @@ func firstOnHundredThousandPrimes with(
     }
     PRINT(result + 1 - 1)
 }
+func simpleRekuTest(int n){
+    if n > 0{
+        PRINT(n)
+        PARG(n - 1)
+        CALL(simpleRekuTest)
+    }
+}
+func fibRekuTest(int n) with(
+    int(leftResult, rightResult, leftArg, rightArg)
+){
+    if n < 2{
+        RETURN(n)
+    }else{
+        leftArg = n - 1
+        PARG(leftArg)
+        CALL(fibRekuTest)
+        RETG(leftResult)
+        rightArg = n - 2
+        PARG(rightArg)
+        CALL(fibRekuTest)
+        RETG(rightResult)
+        RETURN(leftResult + rightResult)
+    }
+}
 
-func main with{
-    CALL(firstOnHundredThousandPrimes)
+func main with(
+    int(n)
+){
+    n = 30
+    PARG(n)
+    CALL(fibRekuTest)
+    RETG(n)
+    PRINT(n)
 }

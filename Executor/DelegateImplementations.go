@@ -717,6 +717,9 @@ func (this *GARG) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMAr
 		stackframe.variables[a.integer].realValue = stackframe.executor.argRegister[b.integer].realValue
 		break
 	}
+	if b.integer == len(stackframe.executor.argRegister)-1 {
+		stackframe.executor.argRegister = nil
+	}
 }
 func (this *GARG) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
 	fmt.Println("ERROR: Delegate GARG, Method runThreeArgs called!")
@@ -774,6 +777,7 @@ func (this *RETG) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 		stackframe.variables[a.integer].realValue = stackframe.executor.returnRegister.realValue
 		break
 	}
+	stackframe.executor.argRegister = nil
 }
 func (this *RETG) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
 	fmt.Println("ERROR: Delegate RETG, Method runTwoArgs called!")
