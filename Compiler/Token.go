@@ -73,6 +73,7 @@ const NUMBER = 23
 const ARR_BRACE_RIGHT = 24
 const ARR_BRACE_LEFT = 25
 const SYSTEM_FUNCTION = 26
+const ARR_INDEXING_OP = 27
 
 type Token struct {
 	content   string

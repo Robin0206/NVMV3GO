@@ -1,26 +1,15 @@
 //before
-if expression{
-	//body
-}else{
-    //elsebody
+for i from 0 to 100{
+    //body
 }
 //after
 
+
 //before
-if expression{
-    //ifbody
+REFA(i, 2, 0)
+i = 0
+while i < 100{
+    //body
+    i = i + 1
 }
-REFA(negatedExpressionBuffer, 0, 0);
-negatedExpressionBuffer = expression;
-NOT(negatedExpressionBuffer, negatedExpressionBuffer);
-if negatedExpressionBuffer{
-    //elsebody
-}
-
-isntead of else insert:
-REFA(negatedExpressionBuffer, 0, 0);
-negatedExpressionBuffer = expression;
-NOT(negatedExpressionBuffer, negatedExpressionBuffer);
-if negatedExpressionBuffer
-
-
+//after

@@ -135,3 +135,12 @@ func lineContainsToken(content string, line []Token) bool {
 	}
 	return false
 }
+
+func lineContainsTokenType(t int, line []Token) bool {
+	for _, token := range line {
+		if token.tokenType == t {
+			return true
+		}
+	}
+	return false
+}
