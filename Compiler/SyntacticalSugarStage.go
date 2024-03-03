@@ -44,6 +44,16 @@ func generateSetLine(name, value string) []Token {
 	result = append(result, generateToken(";", SEMICOLON))
 	return result
 }
+func generateSetLineWithExpression(name string, expression []Token) []Token {
+	var result []Token
+	result = append(result, generateToken(name, NAME))
+	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
+	for _, token := range expression {
+		result = append(result, token)
+	}
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
 
 func printTokens(tokens []Token) {
 	fmt.Println("==================================================")
@@ -143,4 +153,52 @@ func lineContainsTokenType(t int, line []Token) bool {
 		}
 	}
 	return false
+}
+
+func lineContainsOperator(line []Token) bool {
+	for _, token := range line {
+		if token.isOperator() {
+			return true
+		}
+	}
+	return false
+}
+
+func lineIsFunctionCall(line []Token) bool {
+	return lineContainsTokenType(BRACE_LEFT, line) &&
+		lineContainsTokenType(BRACE_RIGHT, line) &&
+		!lineContainsTokenType(OPERATOR_SINGLE_EQUALS, line)
+}
+
+func getType(varName Token, wholeFunction [][]Token) int {
+	for _, line := range wholeFunction {
+		if line[0].content == "REFA" && line[2].content == varName.content {
+			result, _ := strconv.ParseInt(line[4].content, 10, 64)
+			return int(result)
+		}
+	}
+	return -1
+}
+func isOperatorThatAlwaysOutPutsBool(operator Token) bool {
+	return operator.tokenType == OPERATOR_DOUBLE_EQUALS || operator.tokenType == OPERATOR_LESS || operator.tokenType == OPERATOR_MORE
+}
+func lineContainsOperatorThatAlwaysOutputsBool(line []Token) bool {
+	for _, token := range line {
+		if isOperatorThatAlwaysOutPutsBool(token) {
+			return true
+		}
+	}
+	return false
+}
+
+func lineEquals(a []Token, b []Token) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := 0; i < len(a); i++ {
+		if a[i].content != b[i].content {
+			return false
+		}
+	}
+	return true
 }

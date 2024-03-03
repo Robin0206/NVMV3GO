@@ -140,10 +140,6 @@ func (this *ExpressionSimplifier) constructExpression(left, right, operator Toke
 	return result
 }
 
-func isOperatorThatAlwaysOutPutsBool(operator Token) bool {
-	return operator.tokenType == OPERATOR_DOUBLE_EQUALS || operator.tokenType == OPERATOR_LESS || operator.tokenType == OPERATOR_MORE
-}
-
 func (this *ExpressionSimplifier) getType(varName Token, wholeFunction [][]Token) int {
 	for _, line := range wholeFunction {
 		if line[0].content == "REFA" && line[2].content == varName.content {

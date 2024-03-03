@@ -21,6 +21,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 		generateElseConverter(),
 		generateIfConverter(),
 		generateWhileConverter(),
+		&InlineOperationRemover{0},
 		&ArrayIndexingOperatorConverter{},
 		generateExpressionSimplifier(),
 		generateInlineNumberConverter(),

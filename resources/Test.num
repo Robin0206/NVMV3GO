@@ -27,7 +27,7 @@ func firstOnHundredThousandPrimes with(
         }
         i = i + 1
     }
-    PRINT(result)
+    PRINT(result + 1 - 1)
 }
 
 func main with{
