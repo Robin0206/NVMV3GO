@@ -23,11 +23,11 @@ func fibRekuTest(int n) with(
     int(leftResult, rightResult, leftArg, rightArg)
 ){
     if n < 2{
-        RETURN(n)
+        return n
     }else{
         rightResult = fibRekuTest(n-1)
         leftResult = fibRekuTest(n - 2)
-        RETURN(leftResult + rightResult)
+        return leftResult + rightResult
     }
 }
 
