@@ -6,8 +6,7 @@ func primeTest(bool. primes, int n) with(
     for i from 0 to n{
         primes.i = true
     }
-    p = 2
-    while p < n{
+    for p from 2 to n{
         result = p * p
         if primes.p{
             while result < n && result > 0{
@@ -15,7 +14,6 @@ func primeTest(bool. primes, int n) with(
                 result = result + p
             }
         }
-        p = p + 1
     }
 }
 func fibRekuTest(int n) with(
@@ -24,7 +22,7 @@ func fibRekuTest(int n) with(
     if n < 2{
         return n
     }else{
-        rightResult = fibRekuTest(n-1)
+        rightResult = fibRekuTest(n - 1)
         leftResult = fibRekuTest(n - 2)
         return leftResult + rightResult
     }
@@ -42,6 +40,7 @@ func main with(
             result = result + 1
         }
     }
-    n = 8
-    PRINT(fibRekuTest(n))
+    n = 6
+    PRINT(fibRekuTest(fibRekuTest(n)))
+    PRINT(result)
 }
