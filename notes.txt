@@ -1,1 +1,25 @@
 
+//before
+for i from start to end{
+    //body
+}
+//after
+
+
+//before
+REFA(i, 2, 0);
+REFA(____for_expr_buffer_0, 0, 0);
+i = start;
+
+____for_expr_buffer_0 = i < end;
+BEQ(____for_expr_buffer_0, true, ____label_for_start_0);
+BEQ(true, true, ____label_for_end_0);
+
+LABEL(____label_for_start_0);
+    //body
+____for_expr_buffer_0 = i < end;
+BEQ(____for_expr_buffer_0, true, ____label_for_start_0);
+
+LABEL(____label_for_end_0);
+//after
+

@@ -22,39 +22,6 @@ func splitToLines(tokens []Token) [][]Token {
 	return result
 }
 
-func generateRefaLine(allocate string, varType int) []Token {
-	var result []Token
-	result = append(result, generateToken("REFA", SYSTEM_FUNCTION))
-	result = append(result, generateToken("(", BRACE_LEFT))
-	result = append(result, generateToken(allocate, NAME))
-	result = append(result, generateToken(",", COMMA))
-	result = append(result, generateToken(strconv.Itoa(varType), NUMBER))
-	result = append(result, generateToken(",", COMMA))
-	result = append(result, generateToken("0", NUMBER))
-	result = append(result, generateToken(")", BRACE_RIGHT))
-	result = append(result, generateToken(";", SEMICOLON))
-	return result
-}
-
-func generateSetLine(name, value string) []Token {
-	var result []Token
-	result = append(result, generateToken(name, NAME))
-	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
-	result = append(result, generateToken(value, NUMBER))
-	result = append(result, generateToken(";", SEMICOLON))
-	return result
-}
-func generateSetLineWithExpression(name string, expression []Token) []Token {
-	var result []Token
-	result = append(result, generateToken(name, NAME))
-	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
-	for _, token := range expression {
-		result = append(result, token)
-	}
-	result = append(result, generateToken(";", SEMICOLON))
-	return result
-}
-
 func printTokens(tokens []Token) {
 	fmt.Println("==================================================")
 	var tabLevel = 0
@@ -231,6 +198,65 @@ func generateRetgLine(name Token) []Token {
 	result = append(result, generateToken("(", BRACE_LEFT))
 	result = append(result, name)
 	result = append(result, generateToken(")", BRACE_RIGHT))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+
+func generateRefaLine(allocate string, varType int) []Token {
+	var result []Token
+	result = append(result, generateToken("REFA", SYSTEM_FUNCTION))
+	result = append(result, generateToken("(", BRACE_LEFT))
+	result = append(result, generateToken(allocate, NAME))
+	result = append(result, generateToken(",", COMMA))
+	result = append(result, generateToken(strconv.Itoa(varType), NUMBER))
+	result = append(result, generateToken(",", COMMA))
+	result = append(result, generateToken("0", NUMBER))
+	result = append(result, generateToken(")", BRACE_RIGHT))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+
+func generateSetLine(name, value string) []Token {
+	var result []Token
+	result = append(result, generateToken(name, NAME))
+	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
+	result = append(result, generateToken(value, NUMBER))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+func generateSetVLine(name, value string) []Token {
+	var result []Token
+	result = append(result, generateToken(name, NAME))
+	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
+	result = append(result, generateToken(value, NAME))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+func generateSetLineToken(name string, value Token) []Token {
+	var result []Token
+	result = append(result, generateToken(name, NAME))
+	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
+	result = append(result, value)
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+
+func generateLabelLine(name string) []Token {
+	var result []Token
+	result = append(result, generateToken("LABEL", SYSTEM_FUNCTION))
+	result = append(result, generateToken("(", BRACE_LEFT))
+	result = append(result, generateToken(name, NAME))
+	result = append(result, generateToken(")", BRACE_RIGHT))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+func generateSetLineWithExpression(name string, expression []Token) []Token {
+	var result []Token
+	result = append(result, generateToken(name, NAME))
+	result = append(result, generateToken("=", OPERATOR_SINGLE_EQUALS))
+	for _, token := range expression {
+		result = append(result, token)
+	}
 	result = append(result, generateToken(";", SEMICOLON))
 	return result
 }

@@ -19,7 +19,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 	var result SyntacticalSugarCompiler
 	result.preprocessor = GeneratePreprocessor()
 	result.lexer = generateLexer()
-	// Keep in mind that ReturnTypeDeducer and NestedFunctionCall converter get substituted by index in the compile method
+	// Keep in mind that ReturnTypeDeducer gets substituted by index in the compile method
 	result.syntacticalSugarProcessingChain = []SyntacticalSugarStage{
 		&ReturnConverter{},
 		&WithRemover{},
@@ -27,10 +27,10 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 		&TrueAndFalseConverter{},
 		&ReturnTypeDeducer{&result},
 		&UserFunctionCallConverter{0},
-		//&NestedFunctionCallConverter{0, &result},
 		generateElseConverter(),
 		generateIfConverter(),
 		generateWhileConverter(),
+		&ForConverter{0},
 		&InlineOperationRemover{0},
 		&ArrayIndexingOperatorConverter{},
 		generateExpressionSimplifier(),
@@ -50,9 +50,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 func (this *SyntacticalSugarCompiler) Compile(input []string, debugPrint bool) []Executor.NVMCommand {
 	var tempResult []string
 	var returnTypeDeducer = ReturnTypeDeducer{this}
-	//var nestedFunctionCallConverter = NestedFunctionCallConverter{0, this}
 	this.syntacticalSugarProcessingChain[4] = &returnTypeDeducer
-	//this.syntacticalSugarProcessingChain[5] = &nestedFunctionCallConverter
 	//remove blank lines
 	for _, line := range input {
 		if len(line) > 0 {

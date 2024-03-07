@@ -3,9 +3,8 @@ func primeTest(bool. primes, int n) with(
     bool(boolBuffer, boolBuffer2)
 ){
     n = 100000
-    while i < n{
+    for i from 0 to n{
         primes.i = true
-        i = i + 1
     }
     p = 2
     while p < n{
@@ -38,12 +37,10 @@ func main with(
     n = 100000
     primeTest(primes, n)
     result = 0
-    counter = 0
-    while counter < n{
-        if primes.counter{
-            result = result  + 1
+    for i from 0 to n{
+        if primes.i{
+            result = result + 1
         }
-        counter = counter + 1
     }
     k = 30
     fibRes = fibRekuTest(k)
