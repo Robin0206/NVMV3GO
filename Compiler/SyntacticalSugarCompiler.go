@@ -30,6 +30,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 		generateElseConverter(),
 		generateIfConverter(),
 		generateWhileConverter(),
+		&DoConverter{0},
 		&ForConverter{0},
 		&InlineOperationRemover{0},
 		&ArrayIndexingOperatorConverter{},

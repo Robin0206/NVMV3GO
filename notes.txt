@@ -1,25 +1,13 @@
 
 //before
-for i from start to end{
+do i times{
     //body
 }
 //after
 
-
 //before
-REFA(i, 2, 0);
-REFA(____for_expr_buffer_0, 0, 0);
-i = start;
-
-____for_expr_buffer_0 = i < end;
-BEQ(____for_expr_buffer_0, true, ____label_for_start_0);
-BEQ(true, true, ____label_for_end_0);
-
-LABEL(____label_for_start_0);
+REFA(____do_buffer_0, 2, 0);
+for ____do_buffer_0 from 0 to i{
     //body
-____for_expr_buffer_0 = i < end;
-BEQ(____for_expr_buffer_0, true, ____label_for_start_0);
-
-LABEL(____label_for_end_0);
+}
 //after
-
