@@ -2,24 +2,32 @@ package Compiler
 
 import (
 	"NVMV3/Executor"
+	"fmt"
+	"strconv"
 )
 
 type SyntacticalSugarCompiler struct {
 	preprocessor                    Preprocessor
 	lexer                           Lexer
 	syntacticalSugarProcessingChain []SyntacticalSugarStage
+	functionNames                   []string
+	functionReturnTypes             []int
+	functionReturnSizes             []int
 }
 
 func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 	var result SyntacticalSugarCompiler
 	result.preprocessor = GeneratePreprocessor()
 	result.lexer = generateLexer()
+	// Keep in mind that ReturnTypeDeducer and NestedFunctionCall converter get substituted by index in the compile method
 	result.syntacticalSugarProcessingChain = []SyntacticalSugarStage{
 		&ReturnConverter{},
 		&WithRemover{},
 		&ArgumentRemover{},
 		&TrueAndFalseConverter{},
+		&ReturnTypeDeducer{&result},
 		&UserFunctionCallConverter{0},
+		//&NestedFunctionCallConverter{0, &result},
 		generateElseConverter(),
 		generateIfConverter(),
 		generateWhileConverter(),
@@ -41,7 +49,10 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 
 func (this *SyntacticalSugarCompiler) Compile(input []string, debugPrint bool) []Executor.NVMCommand {
 	var tempResult []string
-
+	var returnTypeDeducer = ReturnTypeDeducer{this}
+	//var nestedFunctionCallConverter = NestedFunctionCallConverter{0, this}
+	this.syntacticalSugarProcessingChain[4] = &returnTypeDeducer
+	//this.syntacticalSugarProcessingChain[5] = &nestedFunctionCallConverter
 	//remove blank lines
 	for _, line := range input {
 		if len(line) > 0 {
@@ -65,6 +76,7 @@ func (this *SyntacticalSugarCompiler) Compile(input []string, debugPrint bool) [
 	if debugPrint {
 		printTokens(functions[0])
 	}
+
 	for i := 0; i < len(functions); i++ {
 		for _, stage := range this.syntacticalSugarProcessingChain {
 			functions[i] = stage.processTokens(functions[i])
@@ -79,6 +91,13 @@ func (this *SyntacticalSugarCompiler) Compile(input []string, debugPrint bool) [
 		for _, token := range function {
 			resultBuffer = append(resultBuffer, token)
 		}
+	}
+	if debugPrint {
+		fmt.Println("==================================================Functions")
+		for i := 0; i < len(this.functionNames); i++ {
+			fmt.Println("Name: " + this.functionNames[i] + "|| ReturnType: " + strconv.Itoa(this.functionReturnTypes[i]) + "|| ReturnType: " + strconv.Itoa(this.functionReturnSizes[i]))
+		}
+		fmt.Println("==================================================Output")
 	}
 	//split them again to lines
 	var resultLines = splitToLines(resultBuffer)

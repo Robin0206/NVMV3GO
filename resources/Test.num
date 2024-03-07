@@ -20,7 +20,7 @@ func primeTest(bool. primes, int n) with(
     }
 }
 func fibRekuTest(int n) with(
-    int(leftResult, rightResult, leftArg, rightArg)
+    int(leftResult, rightResult)
 ){
     if n < 2{
         return n
