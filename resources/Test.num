@@ -31,7 +31,7 @@ func fibRekuTest(int n) with(
 }
 
 func main with(
-    int(n, result, counter, fibRes, k),
+    int(n, result),
     bool.100000(primes)
 ){
     n = 100000
@@ -42,8 +42,6 @@ func main with(
             result = result + 1
         }
     }
-    k = 30
-    fibRes = fibRekuTest(k)
-    PRINT(fibRes)
-    PRINT(result)
+    n = 8
+    PRINT(fibRekuTest(n))
 }

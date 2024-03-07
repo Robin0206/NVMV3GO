@@ -1,13 +1,27 @@
+//before
+i = pow(fib(n), 2);
+//after
+
+-->
 
 //before
-do i times{
-    //body
-}
+REFA(____inline_function_call_buffer_0, type, 0);
+____inline_function_call_buffer_0 = fib(n);
+i = pow(____inline_function_call_buffer_0, 2);
+//after
+
+
+________________________________________________
+
+//before
+printPow(fib(n), 2);
 //after
 
 //before
-REFA(____do_buffer_0, 2, 0);
-for ____do_buffer_0 from 0 to i{
-    //body
-}
+REFA(____inline_function_call_buffer_0, type, 0);
+____inline_function_call_buffer_0 = fib(n);
+printPow(____inline_function_call_buffer_0, 2);
 //after
+
+
+

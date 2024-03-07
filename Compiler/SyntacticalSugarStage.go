@@ -216,6 +216,20 @@ func generateRefaLine(allocate string, varType int) []Token {
 	return result
 }
 
+func generateRefaArrLine(allocate string, varType int, size int) []Token {
+	var result []Token
+	result = append(result, generateToken("REFA", SYSTEM_FUNCTION))
+	result = append(result, generateToken("(", BRACE_LEFT))
+	result = append(result, generateToken(allocate, NAME))
+	result = append(result, generateToken(",", COMMA))
+	result = append(result, generateToken(strconv.Itoa(varType), NUMBER))
+	result = append(result, generateToken(",", COMMA))
+	result = append(result, generateToken(strconv.Itoa(size), NUMBER))
+	result = append(result, generateToken(")", BRACE_RIGHT))
+	result = append(result, generateToken(";", SEMICOLON))
+	return result
+}
+
 func generateSetLine(name, value string) []Token {
 	var result []Token
 	result = append(result, generateToken(name, NAME))
@@ -259,4 +273,32 @@ func generateSetLineWithExpression(name string, expression []Token) []Token {
 	}
 	result = append(result, generateToken(";", SEMICOLON))
 	return result
+}
+
+func splitAt(line []Token) [][]Token {
+	var result [][]Token
+	//split at commas
+	var currentArg []Token
+	for _, token := range line {
+		if token.tokenType != COMMA {
+			currentArg = append(currentArg, token)
+		} else {
+			result = append(result, currentArg)
+			currentArg = nil
+		}
+	}
+	result = append(result, currentArg)
+	return result
+}
+
+func tokenLineEquals(a []Token, b []Token) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := 0; i < len(a); i++ {
+		if a[i].content != b[i].content {
+			return false
+		}
+	}
+	return true
 }

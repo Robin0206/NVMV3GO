@@ -26,6 +26,7 @@ func GenerateSyntacticalSugarCompiler() SyntacticalSugarCompiler {
 		&ArgumentRemover{},
 		&TrueAndFalseConverter{},
 		&ReturnTypeDeducer{&result},
+		&NestedFunctionCallConverter{0, &result},
 		&UserFunctionCallConverter{0},
 		generateElseConverter(),
 		generateIfConverter(),
@@ -52,6 +53,8 @@ func (this *SyntacticalSugarCompiler) Compile(input []string, debugPrint bool) [
 	var tempResult []string
 	var returnTypeDeducer = ReturnTypeDeducer{this}
 	this.syntacticalSugarProcessingChain[4] = &returnTypeDeducer
+	var inlineFunctionCallConverter = NestedFunctionCallConverter{0, this}
+	this.syntacticalSugarProcessingChain[5] = &inlineFunctionCallConverter
 	//remove blank lines
 	for _, line := range input {
 		if len(line) > 0 {
@@ -102,6 +105,15 @@ func (this *SyntacticalSugarCompiler) Compile(input []string, debugPrint bool) [
 	var resultLines = splitToLines(resultBuffer)
 	var resultCommands = tokenDoubleArrToCommandArr(resultLines)
 	return resultCommands
+}
+
+func (this *SyntacticalSugarCompiler) getTypeFromFunctionName(content string) (int, int) {
+	for i := 0; i < len(this.functionReturnTypes); i++ {
+		if this.functionNames[i] == content {
+			return this.functionReturnTypes[i], this.functionReturnSizes[i]
+		}
+	}
+	return -1, -1
 }
 
 func splitTokensToFunctions(tokens []Token) [][]Token {
