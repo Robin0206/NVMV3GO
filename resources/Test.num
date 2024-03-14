@@ -16,6 +16,29 @@ func primeTest(bool. primes, int n) with(
         }
     }
 }
+
+func printCharArr with(
+    byte.10(b),
+    byte(space, rect, buffer, linefeed)
+){
+    space = b_32
+    rect = b_91
+    linefeed = b_10
+
+    for i from 0 to 10{
+        if i%2 == 0{
+            b.i = space
+        }else{
+            b.i = rect
+        }
+    }
+    for i from 0 to 10{
+    buffer = b.i
+        PRINT(buffer)
+    }
+    PRINT(linefeed)
+}
+
 func fibRekuTest(int n) with(
     int(leftResult, rightResult)
 ){
@@ -33,6 +56,8 @@ func main with(
     bool.100000(primes)
 ){
     n = 100000
+
+    printCharArr()
     primeTest(primes, n)
     result = 0
     for i from 0 to n{

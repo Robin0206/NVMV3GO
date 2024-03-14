@@ -307,6 +307,37 @@ func (this *DIV) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMA
 	}
 }
 
+type MOD struct {
+	executor *NVMExecutor
+}
+
+func (this *MOD) setMachine(executor *NVMExecutor) { this.executor = executor }
+func (this *MOD) runNoArg(stackframe *NVMStackframe) {
+	fmt.Println("ERROR: Delegate MOD, Method runNoArg called!")
+}
+func (this *MOD) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
+	fmt.Println("ERROR: Delegate MOD, Method runOneArg called!")
+}
+func (this *MOD) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
+	fmt.Println("ERROR: Delegate MOD, Method runTwoArgs called!")
+}
+func (this *MOD) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		fmt.Println("ERROR: Called MOD on bool values")
+		break
+	case 1:
+		stackframe.variables[a.integer].byteValue[0] = stackframe.variables[b.integer].byteValue[0] % stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].integerValue[0] = stackframe.variables[b.integer].integerValue[0] % stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		fmt.Println("ERROR: Called MOD on real values")
+		break
+	}
+}
+
 type BINOR struct{ executor *NVMExecutor }
 
 func (this *BINOR) setMachine(executor *NVMExecutor) { this.executor = executor }
@@ -529,7 +560,20 @@ func (this *LOGEQ) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMA
 	fmt.Println("ERROR: Delegate LOGEQ, Method runTwoArgs called!")
 }
 func (this *LOGEQ) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
-	stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[0] == stackframe.variables[c.integer].boolValue[0]
+	switch stackframe.variables[b.integer].valueType {
+	case 0:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[0] == stackframe.variables[c.integer].boolValue[0]
+		break
+	case 1:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].byteValue[0] == stackframe.variables[c.integer].byteValue[0]
+		break
+	case 2:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].integerValue[0] == stackframe.variables[c.integer].integerValue[0]
+		break
+	case 3:
+		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].realValue[0] == stackframe.variables[c.integer].realValue[0]
+		break
+	}
 }
 
 type PRINT struct{ executor *NVMExecutor }
@@ -541,16 +585,17 @@ func (this *PRINT) runNoArg(stackframe *NVMStackframe) {
 func (this *PRINT) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 	switch stackframe.variables[a.integer].valueType {
 	case 0:
-		fmt.Println(stackframe.variables[a.integer].boolValue[0])
+		fmt.Print(stackframe.variables[a.integer].boolValue[0])
 		break
 	case 1:
-		fmt.Printf("%c\n", stackframe.variables[a.integer].byteValue[0])
+		var str = string(stackframe.variables[a.integer].byteValue[0])
+		fmt.Print(str)
 		break
 	case 2:
-		fmt.Println(stackframe.variables[a.integer].integerValue[0])
+		fmt.Print(stackframe.variables[a.integer].integerValue[0])
 		break
 	case 3:
-		fmt.Printf("%f\n", stackframe.variables[a.integer].realValue[0])
+		fmt.Printf("%f", stackframe.variables[a.integer].realValue[0])
 		break
 	}
 }

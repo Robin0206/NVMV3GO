@@ -42,7 +42,10 @@ func convertUserFunctionCallWithoutSingleEquals(line []Token) [][]Token {
 	var args = extractArgumentsFromFunctionCall(line)
 	var result [][]Token
 	for _, arg := range args {
-		result = append(result, generatePargLine(arg))
+		if arg != nil {
+
+			result = append(result, generatePargLine(arg))
+		}
 	}
 	result = append(result, generateCallLine(funcName))
 	return result

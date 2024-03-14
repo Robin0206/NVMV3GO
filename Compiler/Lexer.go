@@ -35,6 +35,9 @@ func (this *Lexer) determineType(token string) int {
 	if _, err := strconv.ParseFloat(token, 64); err == nil {
 		return 23
 	}
+	if strings.Contains(token, "b_") {
+		return 23
+	}
 	var systemFunctionsUpperCase = []string{
 		"NOOP",
 		"REFA",
@@ -70,6 +73,7 @@ func (this *Lexer) determineType(token string) int {
 		"MAIN",
 		"MEND",
 		"RETG",
+		"MOD",
 	}
 
 	for _, sysFunc := range systemFunctionsUpperCase {
@@ -97,6 +101,9 @@ func (this *Lexer) determineType(token string) int {
 	}
 	for _, keyWord := range keyWords {
 		if keyWord == strings.ToLower(token) {
+			return KEYWORD
+		}
+		if strings.Contains(strings.ToLower(token), keyWord) && strings.Contains(token, ".") {
 			return KEYWORD
 		}
 	}

@@ -58,7 +58,7 @@ func getFunctionName(line []Token) Token {
 		return generateToken("xor", SYSTEM_FUNCTION)
 	}
 	if line[3].tokenType == OPERATOR_MODULO {
-		return generateToken("%", SYSTEM_FUNCTION)
+		return generateToken("mod", SYSTEM_FUNCTION)
 	}
 	if line[3].tokenType == OPERATOR_SINGLE_OR {
 		return generateToken("binOr", SYSTEM_FUNCTION)

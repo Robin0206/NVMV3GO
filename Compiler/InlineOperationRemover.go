@@ -120,6 +120,7 @@ func extractArgumentsFromFunctionCall(line []Token) [][]Token {
 			inArgs = true
 		}
 	}
+
 	return result
 }
 

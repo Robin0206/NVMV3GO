@@ -154,6 +154,8 @@ func (execPtr *NVMExecutor) fillDelegateTable() {
 	var RETGDelegate RETG
 	RETGDelegate.setMachine(execPtr)
 	execPtr.delegateTable = append(execPtr.delegateTable, &RETGDelegate)
+	var MODDelegate MOD
+	execPtr.delegateTable = append(execPtr.delegateTable, &MODDelegate)
 
 }
 

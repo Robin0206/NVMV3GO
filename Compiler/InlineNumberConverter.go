@@ -63,7 +63,7 @@ func (this *InlineNumberConverter) convertNumberLine(line []Token) [][]Token {
 	var refaLines [][]Token
 	var setLines [][]Token
 	for _, numberToAllocate := range allocate {
-		if strings.Contains(numberToAllocate, "0x") {
+		if strings.Contains(numberToAllocate, "b_") {
 			refaLines = append(refaLines, generateRefaLine("____numBuffer_"+numberToAllocate, BYTE))
 		} else {
 			if strings.Contains(numberToAllocate, ".") {

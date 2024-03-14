@@ -8,6 +8,11 @@ func (this *SetConverter) processTokens(tokens []Token) []Token {
 	var lines = splitToLines(tokens)
 	var resultLines [][]Token
 	for _, line := range lines {
+		if lineContainsToken("space", line) {
+			for _, token := range line {
+				token.Print()
+			}
+		}
 		if isSetLine(line) {
 			resultLines = append(resultLines, convertSetLine(line))
 			continue

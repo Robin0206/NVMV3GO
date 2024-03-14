@@ -8,6 +8,9 @@ type ArgumentRemover struct {
 }
 
 func (this *ArgumentRemover) processTokens(input []Token) []Token {
+	if !functionDoesHaveAnArgList(input) {
+		return input
+	}
 	var inputLines = splitToLines(input)
 	var firstLine = inputLines[0]
 	if firstLine[2].tokenType != BRACE_LEFT {
@@ -55,6 +58,35 @@ func (this *ArgumentRemover) processTokens(input []Token) []Token {
 		resultLines = append(resultLines, token)
 	}
 	return flatten(resultLines)
+}
+
+func functionDoesHaveAnArgList(input []Token) bool {
+	var foundLeftBrace = false
+	var foundWith = false
+	for _, token := range input {
+		if token.tokenType == BRACE_LEFT {
+			foundLeftBrace = true
+			if !foundWith {
+				return true
+			}
+			continue
+		}
+		if token.tokenType == CURLY_BRACE_LEFT {
+			if !foundLeftBrace {
+				return false
+			} else {
+				return true
+			}
+		}
+		if token.content == "with" {
+			if !foundLeftBrace {
+				return false
+			}
+			foundWith = true
+			continue
+		}
+	}
+	return false
 }
 
 func extractArguments(line []Token) []ArgumentPair {
