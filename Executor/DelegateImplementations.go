@@ -2,6 +2,7 @@ package Executor
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 )
 
@@ -816,4 +817,31 @@ func (this *RETG) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMAr
 }
 func (this *RETG) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
 	fmt.Println("ERROR: Delegate RETG, Method runThreeArgs called!")
+}
+
+type RAND struct{ executor *NVMExecutor }
+
+func (this *RAND) setMachine(executor *NVMExecutor) {
+	this.executor = executor
+}
+func (this *RAND) runNoArg(stackframe *NVMStackframe) {
+	fmt.Println("ERROR: Delegate RAND, Method runNoArg called!")
+}
+func (this *RAND) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
+	fmt.Println("ERROR: Delegate RAND, Method runOneArg called!")
+}
+func (this *RAND) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
+	switch stackframe.variables[a.integer].valueType {
+	case 0:
+		stackframe.variables[a.integer].boolValue[b.integer] = rand.Int()%2 == 0
+	case 1:
+		stackframe.variables[a.integer].byteValue[b.integer] = uint8(rand.Uint32() % 256)
+	case 2:
+		stackframe.variables[a.integer].integerValue[b.integer] = rand.Int31()
+	case 3:
+		stackframe.variables[a.integer].realValue[b.integer] = rand.Float64()
+	}
+}
+func (this *RAND) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
+	fmt.Println("ERROR: Delegate RAND, Method runThreeArgs called!")
 }

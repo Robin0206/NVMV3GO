@@ -127,6 +127,8 @@ func getCommandIndex(commandName string) uint32 {
 		return 33
 	case "MOD":
 		return 34
+	case "RAND":
+		return 35
 
 	}
 	return 42

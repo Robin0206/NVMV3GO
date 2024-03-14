@@ -2,5 +2,3 @@
 Add the command to lexer at the determineType-function to the array systemFunctionsUpperCase
 Add the Delegate Implementation to delegateImplementations.go
 Add it to the executor delegate table
-
-

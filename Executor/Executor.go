@@ -156,6 +156,8 @@ func (execPtr *NVMExecutor) fillDelegateTable() {
 	execPtr.delegateTable = append(execPtr.delegateTable, &RETGDelegate)
 	var MODDelegate MOD
 	execPtr.delegateTable = append(execPtr.delegateTable, &MODDelegate)
+	var RANDDelegate RAND
+	execPtr.delegateTable = append(execPtr.delegateTable, &RANDDelegate)
 
 }
 

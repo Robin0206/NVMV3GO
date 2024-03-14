@@ -19,21 +19,23 @@ func primeTest(bool. primes, int n) with(
 
 func printCharArr with(
     byte.10(b),
-    byte(space, rect, buffer, linefeed)
+    byte(space, rect, buffer, linefeed),
+    int(intBuffer)
 ){
     space = b_32
     rect = b_91
     linefeed = b_10
 
     for i from 0 to 10{
-        if i%2 == 0{
+        RAND(intBuffer, 0)
+        if intBuffer%2 == 0{
             b.i = space
         }else{
             b.i = rect
         }
     }
     for i from 0 to 10{
-    buffer = b.i
+        buffer = b.i
         PRINT(buffer)
     }
     PRINT(linefeed)

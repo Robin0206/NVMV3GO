@@ -74,6 +74,7 @@ func (this *Lexer) determineType(token string) int {
 		"MEND",
 		"RETG",
 		"MOD",
+		"RAND",
 	}
 
 	for _, sysFunc := range systemFunctionsUpperCase {
