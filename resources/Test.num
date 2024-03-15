@@ -1,8 +1,3 @@
-func fillRandom(bool. input, int length){
-    for i from 0 to length{
-        RAND(input, i)
-    }
-}
 
 func countNeighbors(bool. input, int index, int length) with(
     int(neighbors),
@@ -18,26 +13,28 @@ func countNeighbors(bool. input, int index, int length) with(
     return neighbors
 }
 
-func arrCopy(bool. src, bool. dst, int length){
+func arrCopy(bool. src, bool. dst, int length) with(
+    bool(buffer)
+){
     for i from 0 to length{
-        dst.i = src.i
+        buffer = src.i
+        dst.i = buffer
     }
 }
 
 func printArr(bool. grid, int length) with(
     byte(space, x, linefeed),
-    bool(buffer)
+    bool(buffer),
+    int(num)
 ){
+    rect = b_78
     space = b_32
-    rect = b_91
     linefeed = b_10
-
+    num = 10
     for i from 0 to length{
         buffer = grid.i
-        if buffer == true{
-            PRINT(x)
-        }else{
-            PRINT(space)
+        if buffer{
+            PRINT(rect)
         }
     }
 
@@ -61,8 +58,8 @@ func wolfram with(
                 next.i = false
             }
         }
-        printArr(grid, length)
-        arrCopy(next, grid, length)
+        printArr(grid, n)
+        arrCopy(next, grid, n)
         row = row + 1
     }
 }
@@ -87,30 +84,6 @@ func primeTest(bool. primes, int n) with(
     }
 }
 
-func printCharArr with(
-    byte.10(b),
-    byte(space, rect, buffer, linefeed),
-    int(intBuffer)
-){
-    space = b_32
-    rect = b_91
-    linefeed = b_10
-
-    for i from 0 to 10{
-        RAND(intBuffer, 0)
-        if intBuffer%2 == 0{
-            b.i = space
-        }else{
-            b.i = rect
-        }
-    }
-    for i from 0 to 10{
-        buffer = b.i
-        PRINT(buffer)
-    }
-    PRINT(linefeed)
-}
-
 func fibRekuTest(int n) with(
     int(leftResult, rightResult)
 ){
@@ -120,6 +93,12 @@ func fibRekuTest(int n) with(
         rightResult = fibRekuTest(n - 1)
         leftResult = fibRekuTest(n - 2)
         return leftResult + rightResult
+    }
+}
+
+func fillRandom(bool. input, int length){
+    for i from 0 to length{
+        RAND(input, i)
     }
 }
 

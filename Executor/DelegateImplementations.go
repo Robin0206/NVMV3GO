@@ -833,13 +833,13 @@ func (this *RAND) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 func (this *RAND) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
 	switch stackframe.variables[a.integer].valueType {
 	case 0:
-		stackframe.variables[a.integer].boolValue[b.integer] = rand.Int()%2 == 0
+		stackframe.variables[a.integer].boolValue[stackframe.variables[b.integer].integerValue[0]] = rand.Int()%2 == 0
 	case 1:
-		stackframe.variables[a.integer].byteValue[b.integer] = uint8(rand.Uint32() % 256)
+		stackframe.variables[a.integer].byteValue[stackframe.variables[b.integer].integerValue[0]] = uint8(rand.Uint32() % 256)
 	case 2:
-		stackframe.variables[a.integer].integerValue[b.integer] = rand.Int31()
+		stackframe.variables[a.integer].integerValue[stackframe.variables[b.integer].integerValue[0]] = rand.Int31()
 	case 3:
-		stackframe.variables[a.integer].realValue[b.integer] = rand.Float64()
+		stackframe.variables[a.integer].realValue[stackframe.variables[b.integer].integerValue[0]] = rand.Float64()
 	}
 }
 func (this *RAND) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
