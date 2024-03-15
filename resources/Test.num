@@ -1,3 +1,73 @@
+func fillRandom(bool. input, int length){
+    for i from 0 to length{
+        RAND(input, i)
+    }
+}
+
+func countNeighbors(bool. input, int index, int length) with(
+    int(neighbors),
+    bool(buffer)
+){
+    neighbors = 0
+    for i from 0-3 to 3{
+        buffer = input.i
+        if buffer == true{
+            neighbors = neighbors + 1
+        }
+    }
+    return neighbors
+}
+
+func arrCopy(bool. src, bool. dst, int length){
+    for i from 0 to length{
+        dst.i = src.i
+    }
+}
+
+func printArr(bool. grid, int length) with(
+    byte(space, x, linefeed),
+    bool(buffer)
+){
+    space = b_32
+    rect = b_91
+    linefeed = b_10
+
+    for i from 0 to length{
+        buffer = grid.i
+        if buffer == true{
+            PRINT(x)
+        }else{
+            PRINT(space)
+        }
+    }
+
+    PRINT(linefeed)
+}
+
+func wolfram with(
+    bool.100(grid, next),
+    int(n, neighbors, row, rows)
+){
+    rows = 20
+    n = 100
+    fillRandom(grid, n)
+    row = 0
+    while row < rows{
+        for i from 0 to n{
+            neighbors = countNeighbors(grid, i, n)
+            if neighbors == 2 || neighbors == 4{
+                next.i = true
+            }else{
+                next.i = false
+            }
+        }
+        printArr(grid, length)
+        arrCopy(next, grid, length)
+        row = row + 1
+    }
+}
+
+
 func primeTest(bool. primes, int n) with(
     int(result, i, p),
     bool(boolBuffer, boolBuffer2)
@@ -58,8 +128,7 @@ func main with(
     bool.100000(primes)
 ){
     n = 100000
-
-    printCharArr()
+    wolfram()
     primeTest(primes, n)
     result = 0
     for i from 0 to n{

@@ -159,7 +159,7 @@ func (this *AGET) runOneArg(stackframe *NVMStackframe, a *NVMArgument) {
 func (this *AGET) runTwoArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument) {
 	fmt.Println("ERROR: Delegate AGET, Method runTwoArgs called!")
 }
-func (this *AGET) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) {
+func (this *AGET) runThreeArgs(stackframe *NVMStackframe, a *NVMArgument, b *NVMArgument, c *NVMArgument) { //dstindex, srcValArr, srcIndex
 	switch stackframe.variables[a.integer].valueType {
 	case 0:
 		stackframe.variables[a.integer].boolValue[0] = stackframe.variables[b.integer].boolValue[stackframe.variables[c.integer].integerValue[0]]

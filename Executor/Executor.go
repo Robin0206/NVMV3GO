@@ -172,6 +172,7 @@ func (execPtr *NVMExecutor) Run(debugPrint bool) {
 	for !execPtr.stop && len(execPtr.stack) > 0 {
 		currentCommand = execPtr.stack[len(execPtr.stack)-1].function.commands[execPtr.stack[len(execPtr.stack)-1].programCounter]
 		if debugPrint {
+			fmt.Print("func: " + execPtr.stack[len(execPtr.stack)-1].function.name + ", ")
 			fmt.Print("pc: " + strconv.Itoa(execPtr.stack[len(execPtr.stack)-1].programCounter) + ", ")
 			fmt.Print("sf: " + strconv.Itoa(len(execPtr.stack)) + ", ")
 			currentCommand.Print()
