@@ -27,8 +27,8 @@ func printArr(bool. grid, int length) with(
     bool(buffer),
     int(num)
 ){
-    rect = b_78
     space = b_32
+    rect = b_64
     linefeed = b_10
     num = 10
     for i from 0 to length{
