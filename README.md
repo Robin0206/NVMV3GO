@@ -7,4 +7,4 @@ At time of finishing will support:<br>
   -Recursion<br>
   -Memoization<br>
   -with-Block (own idea)<br>
-  -shared Memory on recursively generated Stackframes (own idea)<br>
+  -shared memory on recursively generated stackframes (own idea)<br>
