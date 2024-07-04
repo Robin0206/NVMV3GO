@@ -2,7 +2,7 @@ My own Programming language(Work in Progress).
 
 VM and Compiler Written in Go.
 
-At Time of finishing will support:<br>
+At time of finishing will support:<br>
   -Structs<br>
   -Recursion<br>
   -Memoization<br>
